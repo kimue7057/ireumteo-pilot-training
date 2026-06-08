@@ -189,7 +189,7 @@
           <div class="section-heading">
             <h2>4일 만에 완성하는<br />투자 AX 자동화 실전 커리큘럼</h2>
             <p>
-              데이터 수집부터 AI 리포트 생성, 공시 검색, n8n 자동화까지 핵심 흐름을 4일 동안 압축해 실습합니다.
+              OHLCV 데이터 수집부터 뉴스·리서치 RAG, AI 종합 판단, 백테스팅까지 4일 동안 하나의 투자 리서치 자동화 흐름을 압축해 실습합니다.
             </p>
           </div>
           <div class="badge-row">
@@ -203,17 +203,12 @@
               <div class="day-main">
                 <div class="day-head">
                   <span class="icon-chip">01</span>
-                  <h3>투자 리서치 자동화 기초와 데이터 수집</h3>
+                  <h3>OHLCV 데이터 수집과 기술적 지표 분석</h3>
                 </div>
                 <div class="day-copy">
-                  <p>관심 종목과 시세·뉴스 데이터를 연결하는 수집 루틴의 기본 구조를 만듭니다.</p>
-                  <ul class="mini-list">
-                    <li>관심 종목 구조화</li>
-                    <li>시세·뉴스 수집</li>
-                    <li>시장 지표 연결</li>
-                  </ul>
+                  <p>관심 종목의 시세 데이터를 수집하고 RSI, EMA, MACD 등 핵심 지표를 계산하는 기초 분석 흐름을 만듭니다.</p>
                 </div>
-                <aside class="day-outcome">수집 구조</aside>
+                <aside class="day-outcome">데이터·지표 구축</aside>
               </div>
             </article>
             <article class="day-card">
@@ -221,17 +216,12 @@
               <div class="day-main">
                 <div class="day-head">
                   <span class="icon-chip mint">02</span>
-                  <h3>기술적 지표 분석과 투자 판단 템플릿</h3>
+                  <h3>뉴스 분석과 리서치 RAG 자동화</h3>
                 </div>
                 <div class="day-copy">
-                  <p>정리된 데이터를 핵심 지표와 체크리스트로 연결해 판단 기준을 세웁니다.</p>
-                  <ul class="mini-list">
-                    <li>데이터 가공</li>
-                    <li>핵심 지표 구조</li>
-                    <li>체크리스트 설계</li>
-                  </ul>
+                  <p>뉴스와 리서치 자료를 수집·요약하고, 근거 기반으로 질의응답할 수 있는 AI 분석 구조를 만듭니다.</p>
                 </div>
-                <aside class="day-outcome">판단 템플릿</aside>
+                <aside class="day-outcome">뉴스·RAG 분석</aside>
               </div>
             </article>
             <article class="day-card">
@@ -239,17 +229,12 @@
               <div class="day-main">
                 <div class="day-head">
                   <span class="icon-chip">03</span>
-                  <h3>AI 투자 리포트와 뉴스·공시 분석</h3>
+                  <h3>AI 종합 투자 판단과 모의투자 검증</h3>
                 </div>
                 <div class="day-copy">
-                  <p>뉴스·공시·사업보고서를 AI로 요약해 투자 리포트 흐름을 설계합니다.</p>
-                  <ul class="mini-list">
-                    <li>리포트 구조 설계</li>
-                    <li>핵심 이슈 정리</li>
-                    <li>프롬프트 설계</li>
-                  </ul>
+                  <p>기술 지표와 리서치 결과를 통합해 AI 투자 의견을 생성하고, 모의투자 검증 흐름과 연결합니다.</p>
                 </div>
-                <aside class="day-outcome">AI 리포트</aside>
+                <aside class="day-outcome">종합 판단·검증</aside>
               </div>
             </article>
             <article class="day-card">
@@ -257,19 +242,31 @@
               <div class="day-main">
                 <div class="day-head">
                   <span class="icon-chip mint">04</span>
-                  <h3>n8n 자동화 워크플로우와 최종 시스템 완성</h3>
+                  <h3>백테스팅과 전략 검증</h3>
                 </div>
                 <div class="day-copy">
-                  <p>수집부터 분석, 리포트 생성까지 n8n으로 연결해 개인별 시스템을 완성합니다.</p>
-                  <ul class="mini-list">
-                    <li>n8n 구조 이해</li>
-                    <li>분석 흐름 자동화</li>
-                    <li>정기 실행·알림</li>
-                  </ul>
+                  <p>과거 데이터를 기반으로 전략을 검증하고, 가치투자 지표를 활용해 나만의 판단 기준을 정리합니다.</p>
                 </div>
-                <aside class="day-outcome">최종 시스템</aside>
+                <aside class="day-outcome">백테스팅·전략 검증</aside>
               </div>
             </article>
+          </div>
+          <div class="curriculum-flow" aria-label="커리큘럼 흐름">
+            <span>수집</span>
+            <i aria-hidden="true">→</i>
+            <span>분석</span>
+            <i aria-hidden="true">→</i>
+            <span>종합 판단</span>
+            <i aria-hidden="true">→</i>
+            <span>검증</span>
+          </div>
+          <div class="curriculum-tools" aria-label="사용 도구">
+            <span>n8n</span>
+            <span>ChatGPT/Claude</span>
+            <span>Yahoo Finance</span>
+            <span>Google Sheets</span>
+            <span>OpenAI</span>
+            <span>DART</span>
           </div>
         </div>
       </section>
