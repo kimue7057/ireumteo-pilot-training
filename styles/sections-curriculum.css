@@ -1,0 +1,127 @@
+.curriculum {
+  padding: 80px 0;
+}
+
+.curriculum .badge-row {
+  gap: 8px;
+  margin: -16px 0 28px;
+}
+
+.curriculum .day-list {
+  gap: 16px;
+}
+
+.curriculum .section-heading p {
+  max-width: 760px;
+  margin-inline: auto;
+}
+
+.day-card {
+  overflow: hidden;
+}
+
+.day-meta {
+  display: inline-block;
+  margin: 16px 18px 0;
+  padding: 7px 11px;
+  border-radius: 999px;
+  color: #071829;
+  background: linear-gradient(135deg, var(--blue), var(--mint));
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.day-main {
+  display: grid;
+  grid-template-columns: minmax(0, 250px) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 18px 18px;
+}
+
+.day-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+.day-head .icon-chip {
+  margin-bottom: 0;
+  flex: 0 0 auto;
+}
+
+.day-head h3 {
+  margin: 0;
+}
+
+.day-copy {
+  min-width: 0;
+}
+
+.day-copy p {
+  display: -webkit-box;
+  margin: 0;
+  max-width: 560px;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.curriculum-flow,
+.curriculum-tools {
+  display: grid;
+  justify-content: center;
+  gap: 10px;
+  max-width: 1120px;
+  margin: 16px auto 0;
+}
+
+.curriculum-flow {
+  grid-auto-flow: column;
+  align-items: center;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.curriculum-flow span,
+.curriculum-tools span {
+  padding: 8px 12px;
+  border: 1px solid rgba(232, 243, 251, 0.12);
+  border-radius: 999px;
+  background: rgba(22, 45, 68, 0.72);
+  color: var(--text);
+}
+
+.curriculum-flow i {
+  color: var(--mint);
+  font-style: normal;
+  font-weight: 700;
+}
+
+.curriculum-tools {
+  grid-template-columns: repeat(6, max-content);
+  gap: 8px;
+}
+
+.curriculum-tools span {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.day-outcome {
+  align-self: start;
+  justify-self: end;
+  padding: 9px 12px;
+  border: 1px solid rgba(0, 217, 184, 0.25);
+  border-radius: 999px;
+  color: var(--text);
+  background: rgba(10, 25, 41, 0.5);
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+  word-break: keep-all;
+  white-space: nowrap;
+}
+

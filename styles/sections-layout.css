@@ -1,0 +1,20 @@
+.section-dark {
+  background: linear-gradient(180deg, var(--dark), var(--navy));
+}
+
+.section-navy {
+  background: linear-gradient(180deg, var(--navy), var(--dark));
+}
+
+.hero,
+.problem,
+.solution,
+.program,
+.curriculum,
+.outcomes,
+.audience,
+.faq,
+.final-cta {
+  padding: 92px 0;
+}
+

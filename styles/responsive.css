@@ -1,0 +1,367 @@
+@media (max-width: 1080px) {
+  .desktop-nav,
+  .nav-cta {
+    display: none;
+  }
+
+  .menu-button {
+    display: block;
+  }
+
+  .hero-inner,
+  .problem-compact,
+  .outcome-showcase,
+  .day-main,
+  .footer-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-copy-wrap {
+    max-width: 760px;
+  }
+
+  .hero-visual,
+  .problem-visual,
+  .outcome-visual {
+    max-width: 720px;
+  }
+
+  .feature-grid.three,
+  .feature-grid.four,
+  .info-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .day-outcome {
+    justify-self: start;
+  }
+
+  .curriculum-tools {
+    grid-template-columns: repeat(3, max-content);
+  }
+}
+
+@media (max-width: 760px) {
+  :root {
+    --body: 16px;
+  }
+
+  .container,
+  .narrow {
+    width: min(100% - 28px, 1180px);
+  }
+
+  .nav-wrap {
+    min-height: 68px;
+  }
+
+  .brand-word {
+    font-size: 23px;
+  }
+
+  .hero,
+  .problem,
+  .solution,
+  .program,
+  .curriculum,
+  .outcomes,
+  .audience,
+  .faq,
+  .final-cta {
+    padding: 58px 0;
+  }
+
+  .curriculum {
+    padding: 50px 0;
+  }
+
+  .hero {
+    padding-top: 42px;
+  }
+
+  .hero-inner {
+    gap: 34px;
+  }
+
+  .hero h1 {
+    font-size: clamp(34px, 10vw, 40px);
+  }
+
+  .hero-copy,
+  .trust-box {
+    font-size: 16px;
+  }
+
+  .hero-badge,
+  .eyebrow {
+    font-size: 12px;
+  }
+
+  .button-row,
+  .button {
+    width: 100%;
+  }
+
+  .hero-visual,
+  .system-preview,
+  .problem-visual {
+    min-height: 300px;
+    padding: 18px;
+    border-radius: 20px;
+  }
+
+  .preview-grid,
+  .preview-grid.compact {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .preview-panel {
+    min-height: 86px;
+    padding: 13px;
+  }
+
+  .preview-panel.large {
+    grid-row: span 1;
+  }
+
+  .section-heading {
+    margin-bottom: 34px;
+  }
+
+  .section-heading h2,
+  .problem-copy h2 {
+    font-size: var(--section-title-mobile);
+  }
+
+  .section-heading p,
+  .problem-copy > p {
+    font-size: 16px;
+  }
+
+  .problem-compact {
+    gap: 30px;
+  }
+
+  .dash-news {
+    top: 28px;
+    left: 20px;
+    width: 150px;
+  }
+
+  .dash-chart {
+    top: 68px;
+    right: 18px;
+    width: 144px;
+  }
+
+  .dash-report {
+    left: 24px;
+    bottom: 42px;
+    width: 178px;
+  }
+
+  .dash-person {
+    right: 30px;
+    bottom: 40px;
+    transform: scale(0.82);
+    transform-origin: bottom right;
+  }
+
+  .quote-stack {
+    gap: 8px;
+  }
+
+  .quote-stack span,
+  .mini-compare p,
+  .problem-conclusion {
+    font-size: 15px;
+  }
+
+  .mini-compare {
+    grid-template-columns: 1fr;
+  }
+
+  .feature-grid.three,
+  .feature-grid.four,
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .feature-card,
+  .info-card,
+  .result-box {
+    padding: 20px;
+  }
+
+  .feature-card h3,
+  .info-card strong,
+  .day-main h3,
+  .feature-card.small h3 {
+    font-size: 19px;
+  }
+
+  .statement {
+    margin-top: 30px;
+    font-size: 21px;
+  }
+
+  .wide-box {
+    display: block;
+    padding: 20px;
+  }
+
+  .prep-box {
+    min-width: 0;
+    margin-top: 16px;
+  }
+
+  .badge-row {
+    margin-bottom: 26px;
+  }
+
+  .curriculum .badge-row {
+    margin: -10px 0 22px;
+  }
+
+  .day-meta {
+    margin: 14px 16px 0;
+  }
+
+  .day-main {
+    padding: 12px 16px 16px;
+    gap: 10px;
+  }
+
+  .day-head {
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .day-head .icon-chip {
+    min-width: 44px;
+    height: 38px;
+    padding: 0 10px;
+  }
+
+  .day-copy p {
+    font-size: 15px;
+    -webkit-line-clamp: 1;
+  }
+
+  .curriculum-flow {
+    grid-template-columns: repeat(4, minmax(0, max-content));
+    grid-auto-flow: row;
+    gap: 8px 6px;
+    margin-top: 14px;
+  }
+
+  .curriculum-flow i {
+    display: none;
+  }
+
+  .curriculum-flow span,
+  .curriculum-tools span {
+    padding: 7px 10px;
+    font-size: 12px;
+  }
+
+  .day-outcome {
+    padding: 7px 11px;
+    font-size: 12px;
+  }
+
+  .curriculum-tools {
+    grid-template-columns: repeat(2, max-content);
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .outcome-showcase {
+    gap: 18px;
+  }
+
+  .result-box h3 {
+    font-size: 26px;
+  }
+
+  .outcome-core {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .outcome-core .feature-card {
+    padding: 16px;
+  }
+
+  .outcome-core .feature-card p {
+    font-size: 14px;
+  }
+
+  .tag-cloud span,
+  .fit-strip span {
+    font-size: 12px;
+  }
+
+  .audience-gallery-note {
+    margin-bottom: 16px;
+    font-size: 14px;
+  }
+
+  .experience-gallery {
+    gap: 12px;
+  }
+
+  .faq summary {
+    padding: 18px;
+    font-size: 16px;
+  }
+
+  .faq details p {
+    padding: 0 18px 18px;
+    font-size: 15px;
+  }
+
+  .final-cta h2 {
+    font-size: clamp(30px, 9vw, 38px);
+  }
+
+  .final-cta p {
+    font-size: 16px;
+  }
+
+  .footer-grid {
+    gap: 24px;
+  }
+}
+
+@media (max-width: 430px) {
+  .experience-gallery {
+    grid-auto-flow: column;
+    grid-template-columns: none;
+    grid-auto-columns: minmax(240px, 78vw);
+    overflow-x: auto;
+    padding-bottom: 6px;
+  }
+
+  .gallery-card {
+    scroll-snap-align: start;
+  }
+
+  .curriculum-flow {
+    grid-template-columns: repeat(2, minmax(0, max-content));
+  }
+
+  .curriculum-tools {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .curriculum-tools span {
+    text-align: center;
+  }
+
+  .outcome-core {
+    grid-template-columns: 1fr;
+  }
+}
+

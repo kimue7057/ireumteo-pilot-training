@@ -1,0 +1,172 @@
+.feature-grid,
+.info-grid,
+.day-list,
+.faq-list {
+  display: grid;
+  gap: 20px;
+}
+
+.feature-grid.three {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.feature-grid.four,
+.info-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.feature-card,
+.info-card,
+.day-card,
+.wide-box,
+.result-box,
+.faq details {
+  border: 1px solid rgba(232, 243, 251, 0.12);
+  border-radius: var(--radius);
+  background: rgba(22, 45, 68, 0.88);
+  box-shadow: 0 16px 38px rgba(0, 0, 0, 0.14);
+}
+
+.feature-card,
+.info-card {
+  padding: 26px;
+}
+
+.feature-card {
+  transition: border-color 160ms ease, transform 160ms ease;
+}
+
+.feature-card:hover,
+.info-card:hover,
+.day-card:hover {
+  border-color: rgba(0, 217, 184, 0.5);
+  transform: translateY(-2px);
+}
+
+.icon-chip {
+  display: inline-grid;
+  place-items: center;
+  min-width: 52px;
+  height: 42px;
+  padding: 0 12px;
+  margin-bottom: 18px;
+  border-radius: 12px;
+  color: var(--blue);
+  background: rgba(20, 115, 255, 0.12);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.icon-chip.mint {
+  color: var(--mint);
+  background: rgba(0, 217, 184, 0.12);
+}
+
+.feature-card h3,
+.info-card strong,
+.day-main h3 {
+  margin: 0 0 10px;
+  color: var(--text);
+  font-size: 22px;
+  line-height: 1.28;
+  font-weight: 700;
+  word-break: keep-all;
+}
+
+.feature-card.small h3 {
+  font-size: 20px;
+}
+
+.feature-card p,
+.feature-card.small p {
+  margin: 0;
+}
+
+.statement {
+  max-width: 720px;
+  margin: 42px auto 0;
+  text-align: center;
+  color: var(--text);
+  font-size: 26px;
+  line-height: 1.45;
+  font-weight: 600;
+  word-break: keep-all;
+}
+
+.info-card {
+  text-align: center;
+}
+
+.info-card span {
+  display: block;
+  margin-bottom: 12px;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.info-card strong {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.wide-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 20px;
+  padding: 26px;
+}
+
+.wide-box h3 {
+  margin: 0 0 6px;
+  font-size: 22px;
+}
+
+.wide-box p {
+  margin: 0;
+}
+
+.prep-box {
+  display: grid;
+  gap: 4px;
+  min-width: 230px;
+  padding: 16px 20px;
+  border-radius: 14px;
+  background: rgba(10, 25, 41, 0.54);
+}
+
+.prep-box span {
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.prep-box strong {
+  font-size: 18px;
+}
+
+.badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin: -20px 0 36px;
+}
+
+.badge-row span {
+  padding: 10px 15px;
+  border: 1px solid rgba(232, 243, 251, 0.12);
+  border-radius: 999px;
+  background: rgba(22, 45, 68, 0.78);
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.day-list {
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
