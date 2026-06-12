@@ -1,0 +1,123 @@
+.curriculum {
+  padding: 80px 0;
+}
+
+.curriculum .badge-row {
+  gap: 8px;
+  margin: -16px 0 28px;
+}
+
+.curriculum .day-list {
+  justify-items: center;
+  gap: 18px;
+}
+
+.curriculum .section-heading p {
+  max-width: 760px;
+  margin-inline: auto;
+}
+
+.day-item {
+  width: min(100%, 820px);
+  max-width: 100%;
+}
+
+.day-card {
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  padding: 16px 22px;
+}
+
+.day-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 8px;
+}
+
+.day-meta {
+  display: inline-block;
+  margin: 0;
+  padding: 7px 11px;
+  border-radius: 999px;
+  color: #ffffff;
+  background: var(--action);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.day-keywords {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.day-keyword {
+  padding: 7px 11px;
+  border: 1px solid rgba(237, 246, 255, 0.12);
+  border-radius: 999px;
+  background: rgba(7, 21, 35, 0.5);
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+  word-break: keep-all;
+  white-space: nowrap;
+}
+
+.day-main {
+  display: grid;
+  grid-template-columns: minmax(240px, max-content) minmax(320px, 1fr);
+  align-items: center;
+  gap: 18px;
+  padding: 0;
+}
+
+.curriculum .day-head h3 {
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.day-copy {
+  min-width: 0;
+}
+
+.day-copy p {
+  display: -webkit-box;
+  margin: 0;
+  max-width: 430px;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.curriculum-tools {
+  display: grid;
+  justify-content: center;
+  gap: 10px;
+  max-width: 1120px;
+  margin: 16px auto 0;
+}
+
+.curriculum-tools span {
+  padding: 8px 12px;
+  border: 1px solid rgba(237, 246, 255, 0.12);
+  border-radius: 999px;
+  background: rgba(20, 40, 60, 0.72);
+  color: var(--text);
+}
+
+.curriculum-tools {
+  grid-template-columns: repeat(6, max-content);
+  gap: 8px;
+}
+
+.curriculum-tools span {
+  font-size: 13px;
+  font-weight: 600;
+}

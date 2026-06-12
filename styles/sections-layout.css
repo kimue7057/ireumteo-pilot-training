@@ -1,0 +1,24 @@
+.section-dark {
+  background: var(--dark);
+}
+
+.section-navy {
+  background: var(--navy);
+}
+
+.program {
+  border-top: 1px solid rgba(237, 246, 255, 0.12);
+  background: var(--dark);
+}
+
+.hero,
+.problem,
+.solution,
+.program,
+.curriculum,
+.outcomes,
+.audience,
+.faq,
+.final-cta {
+  padding: 92px 0;
+}

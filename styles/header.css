@@ -1,0 +1,169 @@
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(10, 25, 41, 0.92);
+  border-bottom: 1px solid rgba(232, 243, 251, 0.1);
+  backdrop-filter: blur(16px);
+}
+
+.nav-wrap {
+  min-height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  flex: 0 0 auto;
+}
+
+.brand-mark {
+  width: 40px;
+  height: 40px;
+  border: 2px solid var(--mint);
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+}
+
+.brand-mark svg {
+  width: 23px;
+  height: 23px;
+  overflow: visible;
+}
+
+.brand-mark circle {
+  fill: var(--action);
+}
+
+.brand-mark path {
+  fill: none;
+  stroke: var(--action);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.brand-word {
+  color: var(--text);
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.brand-word span,
+.trust-box span,
+.section-heading span,
+.statement span,
+.result-box em,
+.cta-panel span,
+.trust-panel span,
+.wide-box span {
+  color: var(--mint);
+  font-style: normal;
+}
+
+.desktop-nav {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  color: var(--text);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.desktop-nav a,
+.footer a {
+  transition: color 160ms ease;
+}
+
+.desktop-nav a:hover,
+.footer a:hover {
+  color: var(--mint);
+}
+
+.nav-cta,
+.button,
+.mobile-header-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 46px;
+  border-radius: 12px;
+  font-weight: 700;
+}
+
+.nav-cta,
+.button.primary,
+.mobile-header-cta {
+  color: #ffffff;
+  background: var(--action);
+  box-shadow: 0 12px 26px rgba(37, 99, 235, 0.22);
+  transition: background 160ms ease, transform 160ms ease, box-shadow 160ms ease;
+}
+
+.nav-cta:hover,
+.button.primary:hover,
+.mobile-header-cta:hover {
+  background: var(--action-hover);
+  box-shadow: 0 14px 30px rgba(37, 99, 235, 0.28);
+  transform: translateY(-1px);
+}
+
+.nav-cta {
+  padding: 0 24px;
+}
+
+.button {
+  padding: 13px 24px;
+  font-size: 16px;
+}
+
+.button.secondary {
+  color: var(--text);
+  border: 1px solid rgba(237, 246, 255, 0.24);
+  background: rgba(237, 246, 255, 0.04);
+}
+
+.button.secondary:hover {
+  border-color: rgba(45, 212, 191, 0.5);
+  background: var(--accent-soft);
+}
+
+.mobile-header-actions,
+.mobile-header-cta {
+  display: none;
+}
+
+.menu-button {
+  display: none;
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.menu-button span {
+  display: block;
+  height: 2px;
+  margin: 6px 0;
+  background: var(--text);
+}
+
+.mobile-nav {
+  padding: 0 0 20px;
+}
+
+.mobile-nav a {
+  display: block;
+  padding: 12px 0;
+  color: var(--text);
+  font-weight: 600;
+}
