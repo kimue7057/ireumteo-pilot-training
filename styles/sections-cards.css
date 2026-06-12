@@ -1,0 +1,232 @@
+.feature-grid,
+.info-grid,
+.day-list,
+.faq-list {
+  display: grid;
+  gap: 20px;
+}
+
+.feature-grid.three {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.feature-grid.four,
+.info-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.feature-card,
+.info-card,
+.day-card,
+.result-box,
+.faq details {
+  border: 1px solid rgba(237, 246, 255, 0.12);
+  border-radius: var(--radius);
+  background: rgba(20, 40, 60, 0.9);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.16);
+}
+
+.feature-card,
+.info-card {
+  padding: 26px;
+}
+
+.feature-card {
+  transition: border-color 160ms ease, transform 160ms ease;
+}
+
+.feature-card:hover,
+.info-card:hover,
+.day-card:hover {
+  border-color: rgba(45, 212, 191, 0.38);
+  transform: translateY(-2px);
+}
+
+.icon-chip {
+  display: inline-grid;
+  place-items: center;
+  min-width: 52px;
+  height: 42px;
+  padding: 0 12px;
+  margin-bottom: 18px;
+  border-radius: 12px;
+  color: var(--text);
+  background: rgba(37, 99, 235, 0.2);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.icon-chip.mint {
+  color: var(--mint);
+  background: var(--accent-soft);
+}
+
+.feature-card h3,
+.info-card strong,
+.day-main h3 {
+  margin: 0 0 10px;
+  color: var(--text);
+  font-size: 22px;
+  line-height: 1.28;
+  font-weight: 700;
+  word-break: keep-all;
+}
+
+.feature-card.small h3 {
+  font-size: 20px;
+}
+
+.feature-card p,
+.feature-card.small p {
+  margin: 0;
+}
+
+.statement {
+  max-width: 720px;
+  margin: 42px auto 0;
+  text-align: center;
+  color: var(--text);
+  font-size: 26px;
+  line-height: 1.45;
+  font-weight: 600;
+  word-break: keep-all;
+}
+
+.info-card {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.info-card span {
+  display: block;
+  margin-bottom: 12px;
+  color: var(--mint);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.info-values {
+  display: grid;
+  align-content: center;
+  gap: 5px;
+  min-height: 68px;
+}
+
+.info-card strong {
+  display: block;
+  margin: 0;
+}
+
+.info-card small {
+  display: block;
+  width: 100%;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(237, 246, 255, 0.1);
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.45;
+  font-weight: 600;
+}
+
+.wide-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 26px;
+  padding: 26px 0 0;
+  border-top: 1px solid rgba(237, 246, 255, 0.14);
+}
+
+.wide-box h3 {
+  margin: 0 0 6px;
+  font-size: 22px;
+}
+
+.wide-box p {
+  margin: 0;
+}
+
+.program-note-list {
+  display: grid;
+  gap: 1px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.program-note-list li {
+  position: relative;
+  padding-left: 17px;
+  color: var(--muted);
+  font-size: 17px;
+  line-height: 1.55;
+  font-weight: 600;
+  word-break: keep-all;
+}
+
+.program-note-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.75em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--text);
+}
+
+.program-note-list span {
+  color: var(--mint);
+  font-weight: 800;
+}
+
+.program-note-list strong {
+  color: var(--text);
+  font-weight: 700;
+}
+
+.prep-box {
+  display: grid;
+  gap: 4px;
+  min-width: 230px;
+  padding: 16px 20px;
+  border-left: 3px solid var(--mint);
+  border-radius: 0 14px 14px 0;
+  background: rgba(45, 212, 191, 0.08);
+}
+
+.prep-box span {
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.prep-box strong {
+  font-size: 18px;
+}
+
+.badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin: -20px 0 36px;
+}
+
+.badge-row span {
+  padding: 10px 15px;
+  border: 1px solid rgba(237, 246, 255, 0.12);
+  border-radius: 999px;
+  background: rgba(20, 40, 60, 0.78);
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.day-list {
+  max-width: 1120px;
+  margin: 0 auto;
+}
