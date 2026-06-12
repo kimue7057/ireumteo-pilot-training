@@ -8,10 +8,26 @@
     display: block;
   }
 
+  .mobile-header-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+    min-height: 44px;
+  }
+
+  .mobile-header-cta {
+    display: inline-flex;
+    min-height: 44px;
+    padding: 0 16px;
+    border-radius: 14px;
+    font-size: 14px;
+    white-space: nowrap;
+  }
+
   .hero-inner,
   .problem-compact,
   .outcome-showcase,
-  .day-main,
   .footer-grid {
     grid-template-columns: 1fr;
   }
@@ -26,14 +42,22 @@
     max-width: 720px;
   }
 
+  .problem-copy {
+    order: 1;
+  }
+
+  .problem-visual {
+    order: 2;
+  }
+
   .feature-grid.three,
   .feature-grid.four,
   .info-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .day-outcome {
-    justify-self: start;
+  .day-main {
+    grid-template-columns: minmax(240px, 0.45fr) minmax(0, 1fr);
   }
 
   .curriculum-tools {
@@ -59,8 +83,21 @@
     font-size: 23px;
   }
 
+  .nav-wrap {
+    gap: 12px;
+  }
+
+  .mobile-header-actions {
+    gap: 6px;
+  }
+
+  .mobile-header-cta {
+    min-height: 44px;
+    padding: 0 14px;
+    font-size: 13px;
+  }
+
   .hero,
-  .problem,
   .solution,
   .program,
   .curriculum,
@@ -68,7 +105,7 @@
   .audience,
   .faq,
   .final-cta {
-    padding: 58px 0;
+    padding: 58px 0 30px 0;
   }
 
   .curriculum {
@@ -77,6 +114,10 @@
 
   .hero {
     padding-top: 42px;
+  }
+
+  .problem {
+    padding: 52px 0;
   }
 
   .hero-inner {
@@ -88,8 +129,17 @@
   }
 
   .hero-copy,
-  .trust-box {
+  .trust-box,
+  .trust-muted {
     font-size: 16px;
+  }
+
+  .trust-box::before {
+    min-height: 126px;
+  }
+
+  .trust-box strong {
+    font-size: 17px;
   }
 
   .hero-badge,
@@ -108,6 +158,18 @@
     min-height: 300px;
     padding: 18px;
     border-radius: 20px;
+  }
+
+  .problem-visual {
+    min-height: 0;
+    padding: 0;
+    border-radius: 18px;
+  }
+
+  .hero-video-card {
+    min-height: 0;
+    padding: 0;
+    border-radius: 18px;
   }
 
   .preview-grid,
@@ -134,6 +196,10 @@
     font-size: var(--section-title-mobile);
   }
 
+  .mobile-break {
+    display: block;
+  }
+
   .section-heading p,
   .problem-copy > p {
     font-size: 16px;
@@ -143,29 +209,12 @@
     gap: 30px;
   }
 
-  .dash-news {
-    top: 28px;
-    left: 20px;
-    width: 150px;
+  .problem-copy .eyebrow {
+    margin-bottom: 14px;
   }
 
-  .dash-chart {
-    top: 68px;
-    right: 18px;
-    width: 144px;
-  }
-
-  .dash-report {
-    left: 24px;
-    bottom: 42px;
-    width: 178px;
-  }
-
-  .dash-person {
-    right: 30px;
-    bottom: 40px;
-    transform: scale(0.82);
-    transform-origin: bottom right;
+  .problem-copy h2 {
+    margin-bottom: 16px;
   }
 
   .quote-stack {
@@ -180,25 +229,73 @@
 
   .mini-compare {
     grid-template-columns: 1fr;
+    margin-top: 20px;
+  }
+
+  .problem-conclusion {
+    padding-top: 18px;
   }
 
   .feature-grid.three,
-  .feature-grid.four,
-  .info-grid {
+  .feature-grid.four {
     grid-template-columns: 1fr;
   }
 
+  .solution .feature-grid.three {
+    gap: 12px;
+  }
+
+  .info-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
   .feature-card,
-  .info-card,
   .result-box {
     padding: 20px;
   }
 
+  .solution .feature-card {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: 6px 14px;
+    padding: 16px;
+  }
+
+  .solution .feature-card .icon-chip {
+    grid-row: 1 / 3;
+    min-width: 58px;
+    height: 48px;
+    margin-bottom: 0;
+    border-radius: 14px;
+  }
+
+  .solution .feature-card h3 {
+    margin-bottom: 0;
+  }
+
+  .solution .feature-card p {
+    line-height: 1.55;
+  }
+
+  .info-card {
+    padding: 16px 12px;
+  }
+
   .feature-card h3,
-  .info-card strong,
   .day-main h3,
   .feature-card.small h3 {
     font-size: 19px;
+  }
+
+  .info-card strong {
+    font-size: 18px;
+  }
+
+  .info-card span,
+  .info-card small {
+    font-size: 13px;
   }
 
   .statement {
@@ -207,13 +304,19 @@
   }
 
   .wide-box {
-    display: block;
-    padding: 20px;
+    display: grid;
+    gap: 14px;
+    padding: 18px 0 0;
+  }
+
+  .program-note-list li {
+    font-size: 15px;
   }
 
   .prep-box {
     min-width: 0;
-    margin-top: 16px;
+    margin-top: 0;
+    padding: 14px 16px;
   }
 
   .badge-row {
@@ -224,65 +327,73 @@
     margin: -10px 0 22px;
   }
 
-  .day-meta {
-    margin: 14px 16px 0;
+  .day-item,
+  .day-card {
+    width: 100%;
+  }
+
+  .day-card {
+    padding: 14px;
+  }
+
+  .day-meta-row {
+    margin: 0 0 10px;
   }
 
   .day-main {
-    padding: 12px 16px 16px;
-    gap: 10px;
+    grid-template-columns: 1fr;
+    padding: 0;
+    gap: 8px;
   }
 
-  .day-head {
-    gap: 12px;
-    align-items: flex-start;
-  }
-
-  .day-head .icon-chip {
-    min-width: 44px;
-    height: 38px;
-    padding: 0 10px;
+  .day-head h3 {
+    white-space: nowrap;
   }
 
   .day-copy p {
     font-size: 15px;
-    -webkit-line-clamp: 1;
+    -webkit-line-clamp: 2;
   }
 
-  .curriculum-flow {
-    grid-template-columns: repeat(4, minmax(0, max-content));
-    grid-auto-flow: row;
-    gap: 8px 6px;
-    margin-top: 14px;
-  }
-
-  .curriculum-flow i {
-    display: none;
-  }
-
-  .curriculum-flow span,
+  .day-keyword,
   .curriculum-tools span {
     padding: 7px 10px;
     font-size: 12px;
-  }
-
-  .day-outcome {
-    padding: 7px 11px;
-    font-size: 12px;
+    min-width: 0;
+    text-align: center;
+    white-space: normal;
   }
 
   .curriculum-tools {
-    grid-template-columns: repeat(2, max-content);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 8px;
+    width: 100%;
+    max-width: 430px;
     margin-top: 12px;
-  }
-
-  .outcome-showcase {
-    gap: 18px;
   }
 
   .result-box h3 {
     font-size: 26px;
+  }
+
+  .outcome-list {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    margin-top: 22px;
+    padding-top: 18px;
+  }
+
+  .outcome-list li {
+    padding: 0;
+  }
+
+  .outcome-list strong {
+    font-size: 18px;
+  }
+
+  .outcome-note {
+    margin-top: 18px;
+    font-size: 13px;
   }
 
   .outcome-core {
@@ -330,8 +441,37 @@
     font-size: 16px;
   }
 
+  .final-cta .button.primary {
+    min-width: 0;
+    min-height: 54px;
+    font-size: 18px;
+  }
+
   .footer-grid {
-    gap: 24px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px 18px;
+    margin-bottom: 24px;
+  }
+
+  .footer-grid > div:first-child,
+  .footer-grid > div:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .footer {
+    padding: 36px 0 24px;
+  }
+
+  .footer h3 {
+    margin-bottom: 10px;
+  }
+
+  .footer nav a {
+    margin: 8px 0;
+  }
+
+  .copyright {
+    padding-top: 18px;
   }
 }
 
@@ -348,10 +488,6 @@
     scroll-snap-align: start;
   }
 
-  .curriculum-flow {
-    grid-template-columns: repeat(2, minmax(0, max-content));
-  }
-
   .curriculum-tools {
     grid-template-columns: 1fr 1fr;
   }
@@ -364,4 +500,3 @@
     grid-template-columns: 1fr;
   }
 }
-

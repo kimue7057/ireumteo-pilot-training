@@ -1,9 +1,14 @@
 .section-dark {
-  background: linear-gradient(180deg, var(--dark), var(--navy));
+  background: var(--dark);
 }
 
 .section-navy {
-  background: linear-gradient(180deg, var(--navy), var(--dark));
+  background: var(--navy);
+}
+
+.program {
+  border-top: 1px solid rgba(237, 246, 255, 0.12);
+  background: var(--dark);
 }
 
 .hero,
@@ -17,4 +22,3 @@
 .final-cta {
   padding: 92px 0;
 }
-

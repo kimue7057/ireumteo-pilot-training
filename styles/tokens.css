@@ -1,19 +1,22 @@
 :root {
-  --dark: #0a1929;
-  --navy: #102842;
-  --panel: #162d44;
-  --panel-strong: #1b3550;
-  --line: #284258;
-  --mint: #00d9b8;
-  --blue: #1473ff;
-  --text: #e8f3fb;
-  --muted: #aebdca;
-  --soft: #6f8294;
+  --dark: #071523;
+  --navy: #0d2034;
+  --panel: #14283c;
+  --panel-strong: #1a3148;
+  --line: #2a4158;
+  --mint: #2dd4bf;
+  --blue: #2563eb;
+  --action: #2563eb;
+  --action-hover: #1d4ed8;
+  --accent-soft: rgba(45, 212, 191, 0.12);
+  --text: #edf6ff;
+  --muted: #b8c7d6;
+  --soft: #7f91a3;
   --section-title: clamp(36px, 4vw, 44px);
   --section-title-mobile: clamp(26px, 8vw, 32px);
   --body: 17px;
-  --radius: 18px;
-  --shadow: 0 22px 54px rgba(0, 0, 0, 0.24);
+  --radius: 14px;
+  --shadow: 0 18px 42px rgba(0, 0, 0, 0.22);
 }
 
 * {
@@ -50,4 +53,3 @@ img {
 .narrow {
   width: min(100% - 40px, 860px);
 }
-

@@ -38,12 +38,12 @@
 }
 
 .brand-mark circle {
-  fill: var(--blue);
+  fill: var(--action);
 }
 
 .brand-mark path {
   fill: none;
-  stroke: var(--blue);
+  stroke: var(--action);
   stroke-width: 2.4;
   stroke-linecap: round;
   stroke-linejoin: round;
@@ -88,7 +88,7 @@
 
 .nav-cta,
 .button,
-.mobile-cta {
+.mobile-header-cta {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -100,10 +100,19 @@
 
 .nav-cta,
 .button.primary,
-.mobile-cta {
-  color: #071829;
-  background: linear-gradient(135deg, var(--mint), var(--blue));
-  box-shadow: 0 14px 32px rgba(20, 115, 255, 0.18);
+.mobile-header-cta {
+  color: #ffffff;
+  background: var(--action);
+  box-shadow: 0 12px 26px rgba(37, 99, 235, 0.22);
+  transition: background 160ms ease, transform 160ms ease, box-shadow 160ms ease;
+}
+
+.nav-cta:hover,
+.button.primary:hover,
+.mobile-header-cta:hover {
+  background: var(--action-hover);
+  box-shadow: 0 14px 30px rgba(37, 99, 235, 0.28);
+  transform: translateY(-1px);
 }
 
 .nav-cta {
@@ -117,12 +126,18 @@
 
 .button.secondary {
   color: var(--text);
-  border: 1px solid var(--mint);
-  background: transparent;
+  border: 1px solid rgba(237, 246, 255, 0.24);
+  background: rgba(237, 246, 255, 0.04);
 }
 
 .button.secondary:hover {
-  background: rgba(0, 217, 184, 0.08);
+  border-color: rgba(45, 212, 191, 0.5);
+  background: var(--accent-soft);
+}
+
+.mobile-header-actions,
+.mobile-header-cta {
+  display: none;
 }
 
 .menu-button {
@@ -132,6 +147,7 @@
   padding: 10px;
   border: 0;
   background: transparent;
+  cursor: pointer;
 }
 
 .menu-button span {
@@ -151,9 +167,3 @@
   color: var(--text);
   font-weight: 600;
 }
-
-.mobile-cta {
-  margin-top: 8px;
-  padding: 13px 18px;
-}
-

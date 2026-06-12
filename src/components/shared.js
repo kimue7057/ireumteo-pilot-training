@@ -28,15 +28,17 @@ export const header = () => `
         ${renderNavLinks()}
       </nav>
       ${externalApplyLink("nav-cta")}
-      <button class="menu-button" type="button" data-menu-button aria-expanded="false" aria-controls="mobile-nav">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
+      <div class="mobile-header-actions">
+        ${externalApplyLink("mobile-header-cta")}
+        <button class="menu-button" type="button" data-menu-button aria-expanded="false" aria-controls="mobile-nav" aria-label="메뉴 열기">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
     </div>
     <nav class="mobile-nav container" id="mobile-nav" data-mobile-nav hidden aria-label="모바일 메뉴">
       ${renderNavLinks()}
-      ${externalApplyLink("mobile-cta")}
     </nav>
   </header>
 `;
@@ -58,7 +60,6 @@ export const footer = () => `
       <nav>
         <h3>안내</h3>
         <a href="#audience">오프라인 경험</a>
-        <a href="#apply">신청 안내</a>
       </nav>
       <div>
         <h3>문의</h3>

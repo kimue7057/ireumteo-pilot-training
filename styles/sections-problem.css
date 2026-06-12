@@ -1,5 +1,6 @@
 .problem {
-  padding-top: 82px;
+  padding: 68px 0;
+  background: var(--navy);
 }
 
 .problem-compact {
@@ -11,100 +12,33 @@
   margin: 0 auto;
 }
 
-.problem-visual,
-.dashboard-illustration {
+.problem-visual {
   position: relative;
-  min-height: 390px;
+  aspect-ratio: 3 / 2;
+  min-height: 0;
   overflow: hidden;
-  border: 1px solid rgba(0, 217, 184, 0.24);
-  border-radius: 24px;
-  background:
-    linear-gradient(135deg, rgba(22, 45, 68, 0.96), rgba(10, 25, 41, 0.98)),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-    linear-gradient(0deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
-  background-size: auto, 42px 42px, 42px 42px;
+  border: 1px solid rgba(237, 246, 255, 0.12);
+  border-radius: 18px;
+  background: rgba(7, 21, 35, 0.78);
   box-shadow: var(--shadow);
 }
 
-.dash-window {
-  position: absolute;
-  padding: 16px;
-  border: 1px solid rgba(232, 243, 251, 0.14);
-  border-radius: 16px;
-  background: rgba(8, 24, 39, 0.78);
-}
-
-.dash-window span {
-  display: block;
-  margin-bottom: 14px;
-  color: var(--mint);
-  font-size: 12px;
-  font-weight: 700;
-}
-
-.dash-window i {
-  display: block;
-  height: 8px;
-  margin-bottom: 10px;
-  border-radius: 999px;
-  background: rgba(232, 243, 251, 0.3);
-}
-
-.dash-news {
-  top: 42px;
-  left: 34px;
-  width: 178px;
-}
-
-.dash-chart {
-  top: 78px;
-  right: 36px;
-  width: 186px;
-}
-
-.dash-report {
-  left: 52px;
-  bottom: 52px;
-  width: 220px;
-}
-
-.dash-person {
-  position: absolute;
-  right: 64px;
-  bottom: 58px;
-  width: 88px;
-  height: 132px;
-}
-
-.dash-person span {
-  position: absolute;
-  left: 50%;
-  top: 0;
-  width: 44px;
-  height: 44px;
-  transform: translateX(-50%);
-  border: 2px solid rgba(232, 243, 251, 0.8);
-  border-radius: 999px;
-  background: linear-gradient(145deg, #dbe8f0, #8299ad);
-}
-
-.dash-person b {
-  position: absolute;
-  left: 50%;
-  top: 48px;
-  width: 78px;
-  height: 84px;
-  transform: translateX(-50%);
-  border-radius: 28px 28px 12px 12px;
-  background: linear-gradient(145deg, rgba(20, 115, 255, 0.55), rgba(0, 217, 184, 0.3));
+.problem-visual img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .problem-copy h2 {
-  margin: 0 0 16px;
+  margin: 0 0 18px;
   font-size: var(--section-title);
   line-height: 1.18;
   font-weight: 700;
   word-break: keep-all;
+}
+
+.problem-copy .eyebrow {
+  margin-bottom: 16px;
 }
 
 .problem-copy > p {
@@ -126,7 +60,7 @@
   padding: 13px 16px;
   border-left: 3px solid var(--mint);
   border-radius: 0 14px 14px 0;
-  background: rgba(232, 243, 251, 0.06);
+  background: rgba(237, 246, 255, 0.06);
   color: var(--text);
   font-size: 16px;
   line-height: 1.45;
@@ -141,16 +75,44 @@
 
 .mini-compare div {
   padding: 18px;
-  border: 1px solid rgba(232, 243, 251, 0.12);
+  border: 1px solid rgba(237, 246, 255, 0.12);
   border-radius: 16px;
-  background: rgba(22, 45, 68, 0.7);
+  background: rgba(20, 40, 60, 0.7);
+}
+
+.mini-compare div:first-child {
+  border-color: rgba(248, 113, 113, 0.24);
+  background: rgba(127, 29, 29, 0.14);
+}
+
+.mini-compare div:last-child {
+  border-color: rgba(45, 212, 191, 0.36);
+  background: rgba(45, 212, 191, 0.1);
 }
 
 .mini-compare strong {
-  display: block;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
   margin-bottom: 8px;
   color: var(--mint);
   font-size: 14px;
+}
+
+.mini-compare strong::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.mini-compare div:first-child strong {
+  color: #fca5a5;
+}
+
+.mini-compare div:last-child strong {
+  color: var(--mint);
 }
 
 .mini-compare p,
@@ -162,7 +124,7 @@
 }
 
 .problem-conclusion {
-  margin-top: 22px;
+  padding-top: 20px;
   color: var(--text);
   font-weight: 600;
 }
