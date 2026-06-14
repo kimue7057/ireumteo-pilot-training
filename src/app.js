@@ -1,5 +1,6 @@
 import { footer, header } from "./components/shared.js";
 import { pageSections } from "./components/sections.js";
+import { initAnalytics, initAnalyticsEvents } from "./lib/analytics.js";
 
 const mount = document.querySelector("[data-app]");
 
@@ -52,5 +53,7 @@ const initSmoothAnchors = () => {
 };
 
 renderPage();
+initAnalytics();
+initAnalyticsEvents();
 initMobileMenu();
 initSmoothAnchors();

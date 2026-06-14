@@ -1,6 +1,26 @@
 <!doctype html>
 <html lang="ko">
   <head>
+    <script>
+      // Replace this placeholder with your GA4 measurement ID.
+      window.GA_MEASUREMENT_ID = "G-XXXXXXXXXX";
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function gtag() {
+        window.dataLayer.push(arguments);
+      };
+
+      if (
+        /^G-[A-Z0-9]+$/i.test(window.GA_MEASUREMENT_ID) &&
+        window.GA_MEASUREMENT_ID !== "G-XXXXXXXXXX"
+      ) {
+        const googleTagScript = document.createElement("script");
+        googleTagScript.async = true;
+        googleTagScript.src =
+          "https://www.googletagmanager.com/gtag/js?id=" +
+          encodeURIComponent(window.GA_MEASUREMENT_ID);
+        document.head.append(googleTagScript);
+      }
+    </script>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>이룸터 | 주식 투자 AX 자동화 시스템 구축 과정</title>

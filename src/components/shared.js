@@ -14,8 +14,20 @@ export const brand = () => `
   </a>
 `;
 
-export const externalApplyLink = (className, label = "1기 신청하기") => `
-  <a class="${className}" href="${APPLY_URL}" target="_blank" rel="noopener noreferrer">${label}</a>
+export const externalApplyLink = (
+  className,
+  label = "1기 신청하기",
+  analyticsLabel = "apply_button"
+) => `
+  <a
+    class="${className}"
+    href="${APPLY_URL}"
+    target="_blank"
+    rel="noopener noreferrer"
+    data-analytics-event="generate_lead"
+    data-analytics-label="${analyticsLabel}"
+    data-analytics-method="google_form"
+  >${label}</a>
 `;
 
 export const renderNavLinks = () => navItems.map((item) => `<a href="${item.href}">${item.label}</a>`).join("");
@@ -27,9 +39,9 @@ export const header = () => `
       <nav class="desktop-nav" aria-label="주요 메뉴">
         ${renderNavLinks()}
       </nav>
-      ${externalApplyLink("nav-cta")}
+      ${externalApplyLink("nav-cta", "1기 신청하기", "header_nav")}
       <div class="mobile-header-actions">
-        ${externalApplyLink("mobile-header-cta")}
+        ${externalApplyLink("mobile-header-cta", "1기 신청하기", "mobile_header")}
         <button class="menu-button" type="button" data-menu-button aria-expanded="false" aria-controls="mobile-nav" aria-label="메뉴 열기">
           <span></span>
           <span></span>
