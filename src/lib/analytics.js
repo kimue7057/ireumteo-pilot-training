@@ -1,11 +1,9 @@
-const getDataLayer = () => {
-  if (typeof window === "undefined") {
+const getGtag = () => {
+  if (typeof window === "undefined" || typeof window.gtag !== "function") {
     return null;
   }
 
-  window.dataLayer = window.dataLayer || [];
-
-  return window.dataLayer;
+  return window.gtag;
 };
 
 const getEventParams = (element) => {
@@ -27,13 +25,13 @@ const getEventParams = (element) => {
 };
 
 export const initAnalytics = () => {
-  getDataLayer();
+  return getGtag();
 };
 
 export const initAnalyticsEvents = (root = document) => {
-  const dataLayer = getDataLayer();
+  const gtag = getGtag();
 
-  if (!dataLayer) {
+  if (!gtag) {
     return;
   }
 
@@ -48,9 +46,6 @@ export const initAnalyticsEvents = (root = document) => {
       return;
     }
 
-    dataLayer.push({
-      event: target.dataset.analyticsEvent,
-      ...getEventParams(target),
-    });
+    gtag("event", target.dataset.analyticsEvent, getEventParams(target));
   });
 };
