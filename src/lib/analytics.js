@@ -1,21 +1,11 @@
-const PLACEHOLDER_MEASUREMENT_ID = "G-XXXXXXXXXX";
-
-const getMeasurementId = () => {
-  if (typeof window.GA_MEASUREMENT_ID !== "string") {
+const getDataLayer = () => {
+  if (typeof window === "undefined") {
     return null;
   }
 
-  const measurementId = window.GA_MEASUREMENT_ID.trim().toUpperCase();
+  window.dataLayer = window.dataLayer || [];
 
-  if (!/^G-[A-Z0-9]+$/.test(measurementId)) {
-    return null;
-  }
-
-  if (measurementId === PLACEHOLDER_MEASUREMENT_ID) {
-    return null;
-  }
-
-  return measurementId;
+  return window.dataLayer;
 };
 
 const getEventParams = (element) => {
@@ -37,18 +27,13 @@ const getEventParams = (element) => {
 };
 
 export const initAnalytics = () => {
-  const measurementId = getMeasurementId();
-
-  if (!measurementId || typeof window.gtag !== "function") {
-    return;
-  }
-
-  window.gtag("js", new Date());
-  window.gtag("config", measurementId);
+  getDataLayer();
 };
 
 export const initAnalyticsEvents = (root = document) => {
-  if (!getMeasurementId() || typeof window.gtag !== "function") {
+  const dataLayer = getDataLayer();
+
+  if (!dataLayer) {
     return;
   }
 
@@ -63,6 +48,9 @@ export const initAnalyticsEvents = (root = document) => {
       return;
     }
 
-    window.gtag("event", target.dataset.analyticsEvent, getEventParams(target));
+    dataLayer.push({
+      event: target.dataset.analyticsEvent,
+      ...getEventParams(target),
+    });
   });
 };
