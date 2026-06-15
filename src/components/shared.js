@@ -1,9 +1,9 @@
-import { APPLY_URL, navItems } from "../data/siteContent.js?v=20260615d";
+import { APPLY_URL, navItems } from "../data/siteContent.js?v=20260615e";
 
 export const brand = () => `
   <a class="brand" href="#top" aria-label="이룸터 홈">
     <img class="brand-logo brand-logo-icon" src="assets/erumter-logo.png" alt="" aria-hidden="true" />
-    <img class="brand-logo brand-logo-wordmark" src="assets/erumter-wordmark.png" alt="" aria-hidden="true" />
+    <img class="brand-logo brand-logo-wordmark" src="assets/erumter-wordmark.png?v=20260615e" alt="" aria-hidden="true" />
   </a>
 `;
 
