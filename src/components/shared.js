@@ -1,16 +1,8 @@
-import { APPLY_URL, navItems } from "../data/siteContent.js?v=20260615b";
+import { APPLY_URL, navItems } from "../data/siteContent.js?v=20260615c";
 
 export const brand = () => `
   <a class="brand" href="#top" aria-label="이룸터 홈">
-    <span class="brand-mark" aria-hidden="true">
-      <svg viewBox="0 0 24 24" role="img">
-        <circle cx="6" cy="14" r="2.2" />
-        <circle cx="12" cy="8" r="2.2" />
-        <circle cx="18" cy="12" r="2.2" />
-        <path d="M6 14 12 8l6 4" />
-      </svg>
-    </span>
-    <span class="brand-word">이룸<span>터</span></span>
+    <img class="brand-logo" src="assets/erumter-logo.png" alt="이룸터 로고" />
   </a>
 `;
 

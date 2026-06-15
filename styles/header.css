@@ -18,44 +18,17 @@
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 0;
   flex: 0 0 auto;
 }
 
-.brand-mark {
-  width: 40px;
-  height: 40px;
-  border: 2px solid var(--mint);
-  border-radius: 999px;
-  display: grid;
-  place-items: center;
+.brand-logo {
+  display: block;
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
 }
 
-.brand-mark svg {
-  width: 23px;
-  height: 23px;
-  overflow: visible;
-}
-
-.brand-mark circle {
-  fill: var(--action);
-}
-
-.brand-mark path {
-  fill: none;
-  stroke: var(--action);
-  stroke-width: 2.4;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.brand-word {
-  color: var(--text);
-  font-size: 26px;
-  font-weight: 700;
-}
-
-.brand-word span,
 .trust-box span,
 .section-heading span,
 .statement span,
