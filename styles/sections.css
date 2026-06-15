@@ -1,8 +1,8 @@
-@import "./sections-layout.css";
-@import "./sections-hero.css";
-@import "./sections-problem.css";
-@import "./sections-cards.css";
-@import "./sections-curriculum.css";
-@import "./sections-outcomes.css";
-@import "./sections-audience.css";
-@import "./sections-footer.css";
+@import "./sections-layout.css?v=20260615b";
+@import "./sections-hero.css?v=20260615b";
+@import "./sections-problem.css?v=20260615b";
+@import "./sections-cards.css?v=20260615b";
+@import "./sections-curriculum.css?v=20260615b";
+@import "./sections-outcomes.css?v=20260615b";
+@import "./sections-audience.css?v=20260615b";
+@import "./sections-footer.css?v=20260615b";

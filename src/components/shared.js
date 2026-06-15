@@ -1,4 +1,4 @@
-import { APPLY_URL, navItems } from "../data/siteContent.js";
+import { APPLY_URL, navItems } from "../data/siteContent.js?v=20260615b";
 
 export const brand = () => `
   <a class="brand" href="#top" aria-label="이룸터 홈">
