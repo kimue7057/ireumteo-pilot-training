@@ -88,8 +88,8 @@
     height: 46px;
   }
 
-  .brand-logo-wordmark {
-    height: 27px;
+  .brand-word {
+    font-size: 23px;
   }
 
   .nav-wrap {
