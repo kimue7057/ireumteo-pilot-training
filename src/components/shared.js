@@ -75,10 +75,17 @@ export const footer = () => `
       </nav>
       <div>
         <h3>문의</h3>
-        <p>문의: manager@eruty.co.kr<br />연락처: 070-4242-8559</p>
+        <p>문의: <a href="mailto:contact@eruty.co.kr">contact@eruty.co.kr</a><br />연락처: <a href="tel:070-4242-8559">070-4242-8559</a></p>
       </div>
     </div>
-    <p class="copyright">© 2026 이룸터. All rights reserved.</p>
+    <div class="container footer-meta">
+      <p class="business-info">
+        주식회사 이루티 | 대표 김유성 | 사업자등록번호 162-87-02758 | 통신판매업 신고번호 2026-부산남구-0048 |
+        주소 서울특별시 영등포구 의사당대로 83, 서울핀테크랩 6층 | 이메일 <a href="mailto:contact@eruty.co.kr">contact@eruty.co.kr</a> |
+        전화번호 <a href="tel:070-4242-8559">070-4242-8559</a>
+      </p>
+      <p class="copyright">© 2026 이룸터. All rights reserved.</p>
+    </div>
   </footer>
 `;
 
