@@ -15,7 +15,7 @@ export const solutionFeatures = [
 ];
 
 export const programInfo = [
-  { label: "교육 일정", values: ["6월 20일 · 21일", "6월 27일 · 28일"], note: "매주 토·일" },
+  { label: "교육 일정", values: ["7월 4일 · 5일", "7월 11일 · 12일"], note: "매주 토·일" },
   { label: "교육 시간", values: ["오후 1시 - 6시", "회차별 5시간"], note: "총 20시간" },
   { label: "교육 장소", values: ["강남역 부근", "오프라인 교육장"], note: "세부 장소 추후 공지" },
   { label: "수강료", values: ["800,000원"], note: "1기 선착순 20% 할인<br />15명 한정" },
