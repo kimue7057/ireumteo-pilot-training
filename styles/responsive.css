@@ -79,9 +79,17 @@
     min-height: 68px;
   }
 
-  .brand-logo {
-    width: 48px;
-    height: 48px;
+  .brand {
+    gap: 8px;
+  }
+
+  .brand-logo-icon {
+    width: 46px;
+    height: 46px;
+  }
+
+  .brand-logo-wordmark {
+    height: 27px;
   }
 
   .nav-wrap {
