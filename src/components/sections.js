@@ -7,8 +7,8 @@ import {
   outcomeTags,
   programInfo,
   solutionFeatures,
-} from "../data/siteContent.js?v=20260615c";
-import { externalApplyLink, featureCard, sectionHeading } from "./shared.js?v=20260615c";
+} from "../data/siteContent.js?v=20260615d";
+import { externalApplyLink, featureCard, sectionHeading } from "./shared.js?v=20260615d";
 
 const chipList = (items, className) => `<div class="${className}">${items.map((item) => `<span>${item}</span>`).join("")}</div>`;
 

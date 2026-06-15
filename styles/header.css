@@ -18,15 +18,25 @@
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 0;
+  gap: 10px;
   flex: 0 0 auto;
 }
 
 .brand-logo {
   display: block;
-  width: 56px;
-  height: 56px;
   object-fit: contain;
+}
+
+.brand-logo-icon {
+  width: 54px;
+  height: 54px;
+  flex: 0 0 auto;
+}
+
+.brand-logo-wordmark {
+  width: auto;
+  height: 32px;
+  flex: 0 0 auto;
 }
 
 .trust-box span,
