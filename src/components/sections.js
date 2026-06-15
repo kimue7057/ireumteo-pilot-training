@@ -19,7 +19,7 @@ export const heroSection = () => `
         <div class="hero-badge"><span></span>Invest AX · 투자 리서치 자동화 과정</div>
         <h1>
           AI와 함께 투자하는<br />
-          <em>나만의 투자 자동화<br />
+          <em>나만의 자동화<br />
           시스템</em>을 구축하세요
         </h1>
         <div class="trust-box">
