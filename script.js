@@ -1,1 +1,1 @@
-import "./src/app.js?v=20260615e";
+import "./src/app.js?v=20260615f";

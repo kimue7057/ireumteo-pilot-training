@@ -33,12 +33,15 @@
   flex: 0 0 auto;
 }
 
-.brand-logo-wordmark {
-  width: auto;
-  height: 32px;
-  flex: 0 0 auto;
+.brand-word {
+  color: var(--text);
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1;
 }
 
+.brand-word span,
 .trust-box span,
 .section-heading span,
 .statement span,

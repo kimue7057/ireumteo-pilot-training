@@ -1,6 +1,6 @@
-import { footer, header } from "./components/shared.js?v=20260615e";
-import { pageSections } from "./components/sections.js?v=20260615e";
-import { initAnalytics, initAnalyticsEvents } from "./lib/analytics.js?v=20260615e";
+import { footer, header } from "./components/shared.js?v=20260615f";
+import { pageSections } from "./components/sections.js?v=20260615f";
+import { initAnalytics, initAnalyticsEvents } from "./lib/analytics.js?v=20260615f";
 
 const mount = document.querySelector("[data-app]");
 
