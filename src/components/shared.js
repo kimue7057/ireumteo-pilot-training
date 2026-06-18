@@ -1,26 +1,25 @@
-import { APPLY_URL, navItems } from "../data/siteContent.js?v=20260615f";
+import { navItems } from "../data/siteContent.js?v=20260617a";
 
 export const brand = () => `
   <a class="brand" href="#top" aria-label="이룸터 홈">
     <img class="brand-logo brand-logo-icon" src="assets/erumter-logo.png" alt="" aria-hidden="true" />
-    <span class="brand-word">이룸<span>터</span></span>
+    <span class="brand-word">이룸터</span>
   </a>
 `;
 
-export const externalApplyLink = (
+export const applyTriggerButton = (
   className,
   label = "1기 신청하기",
   analyticsLabel = "apply_button"
 ) => `
-  <a
+  <button
+    type="button"
     class="${className}"
-    href="${APPLY_URL}"
-    target="_blank"
-    rel="noopener noreferrer"
+    data-open-apply-modal
     data-analytics-event="generate_lead"
     data-analytics-label="${analyticsLabel}"
-    data-analytics-method="google_form"
-  >${label}</a>
+    data-analytics-method="apply_modal"
+  >${label}</button>
 `;
 
 export const renderNavLinks = () => navItems.map((item) => `<a href="${item.href}">${item.label}</a>`).join("");
@@ -32,9 +31,9 @@ export const header = () => `
       <nav class="desktop-nav" aria-label="주요 메뉴">
         ${renderNavLinks()}
       </nav>
-      ${externalApplyLink("nav-cta", "1기 신청하기", "header_nav")}
+      ${applyTriggerButton("nav-cta", "1기 신청하기", "header_nav")}
       <div class="mobile-header-actions">
-        ${externalApplyLink("mobile-header-cta", "1기 신청하기", "mobile_header")}
+        ${applyTriggerButton("mobile-header-cta", "1기 신청하기", "mobile_header")}
         <button class="menu-button" type="button" data-menu-button aria-expanded="false" aria-controls="mobile-nav" aria-label="메뉴 열기">
           <span></span>
           <span></span>
@@ -53,8 +52,8 @@ export const footer = () => `
     <div class="container footer-grid">
       <div>
         ${brand()}
-        <p class="footer-slogan">배움을 실행으로, 실행을 성과로.</p>
-        <p>AI 기반 실행과 성과를 만드는 성장 플랫폼입니다.</p>
+        <p class="footer-slogan">배움에서 실행으로, 실행에서 성과로</p>
+        <p>AI 기반 실행과 성과를 만드는 오프라인 교육 플랫폼입니다.</p>
       </div>
       <nav>
         <h3>프로그램</h3>
@@ -73,8 +72,7 @@ export const footer = () => `
     </div>
     <div class="container footer-meta">
       <p class="business-info">
-        주식회사 이루티 | 대표 김유성 | 사업자등록번호 162-87-02758 | 통신판매업 신고번호 2026-부산남구-0048 |
-        주소 서울특별시 영등포구 의사당대로 83, 서울핀테크랩 6층 | 이메일 <a href="mailto:contact@eruty.co.kr">contact@eruty.co.kr</a> |
+        이룸터 | 사업자등록번호 162-87-02758 | 문의 <a href="mailto:contact@eruty.co.kr">contact@eruty.co.kr</a> |
         전화번호 <a href="tel:070-4242-8559">070-4242-8559</a>
       </p>
       <p class="copyright">© 2026 이룸터. All rights reserved.</p>

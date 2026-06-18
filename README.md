@@ -29,3 +29,104 @@
 개인 투자자는 매일 많은 정보를 접하지만, 그 정보를 일관된 기준으로 정리하고 판단으로 연결하기는 어렵습니다. Invest AX는 감이나 직관에 의존하는 투자 습관을 줄이고, 데이터와 AI를 활용해 반복 가능한 분석 프로세스를 만들 수 있도록 돕습니다.
 
 AI 도구를 단순히 사용하는 수준을 넘어, 실제 투자 리서치 업무에 맞게 연결하고 자동화해보고 싶은 분에게 적합한 과정입니다.
+
+## 신청 시스템 배포 안내
+
+현재 프로젝트의 신청 시스템은 다음 구조로 동작합니다.
+
+- 정적 랜딩 페이지: `index.html`, `src/`, `styles/`
+- 신청 API: `api/apply.js`
+- 신청 데이터 저장: Supabase `applications` 테이블
+- 이메일 발송: Resend
+
+Vercel에 배포하면 루트 `api` 디렉터리의 `apply.js`가 서버 함수로 배포되어, 폼 제출 시 DB 저장과 이메일 발송까지 처리할 수 있습니다.
+
+### 1. Vercel 배포
+
+1. 저장소를 Vercel에 Import 합니다.
+2. Framework Preset은 `Other`로 두거나 자동 감지를 그대로 사용합니다.
+3. Build 설정은 기본값을 사용해도 됩니다. 이 프로젝트는 정적 파일 + `api/` 함수 구조라 추가 설정이 필요하지 않습니다.
+4. 환경변수를 입력한 뒤 새 배포를 실행합니다.
+
+### 2. 환경변수
+
+`.env.example` 기준으로 아래 값을 Vercel Project Settings > Environment Variables에 등록합니다.
+
+```env
+RESEND_API_KEY=
+ADMIN_EMAIL=contact@eruty.co.kr
+FROM_EMAIL=이룸터 <noreply@erumter.com>
+SUPABASE_URL=
+SUPABASE_SERVICE_ROLE_KEY=
+```
+
+주의:
+
+- `FROM_EMAIL`은 Resend에서 검증된 도메인의 주소여야 합니다.
+- 환경변수를 변경한 경우 기존 배포에는 바로 반영되지 않으므로 재배포가 필요합니다.
+
+### 3. Supabase 테이블 생성
+
+Supabase SQL Editor에서 아래 파일을 실행합니다.
+
+- `supabase/applications.sql`
+
+테이블에는 다음 정보가 저장됩니다.
+
+- `name`
+- `phone`
+- `email`
+- `organization`
+- `investment_level`
+- `ai_experience`
+- `interests`
+- `purpose`
+- `message`
+- `referral_source`
+- `privacy_agreed`
+- `status`
+- `created_at`
+
+`email`은 중복 신청 방지를 위해 고유하게 관리됩니다.
+
+### 4. Resend 설정
+
+1. Resend에서 발신 도메인을 추가합니다.
+2. DNS 레코드를 등록해 도메인을 검증합니다.
+3. 검증된 도메인 기준으로 `FROM_EMAIL`을 설정합니다.
+
+예시:
+
+```env
+FROM_EMAIL=이룸터 <noreply@your-verified-domain.com>
+```
+
+### 5. 신청 처리 흐름
+
+배포 후 사용자가 신청하면 서버에서는 아래 순서로 처리합니다.
+
+1. 요청 데이터 서버 검증
+2. 같은 이메일 중복 신청 여부 확인
+3. Supabase `applications` 저장
+4. 관리자 메일 발송
+5. 신청자 확인 메일 발송
+6. 성공 응답 반환
+
+이메일이 일부 실패해도 DB 저장이 끝났다면 신청은 접수되며, 사용자에게는 메일 발송 지연 가능 안내가 표시됩니다.
+
+### 6. 배포 후 확인 체크리스트
+
+- 신청 폼 제출이 가능한지
+- 동일 이메일 재신청 시 중복 안내가 뜨는지
+- Supabase `applications`에 데이터가 저장되는지
+- 관리자 메일이 수신되는지
+- 신청자 확인 메일이 발송되는지
+- 성공 시 모달이 완료 화면으로 전환되는지
+
+### 7. 로컬 확인이 필요할 때
+
+로컬에서도 서버 함수까지 확인하려면 일반 정적 서버가 아니라 Vercel 개발 서버를 사용합니다.
+
+```bash
+vercel dev
+```

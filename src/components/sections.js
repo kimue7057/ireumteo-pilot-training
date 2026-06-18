@@ -7,8 +7,8 @@ import {
   outcomeTags,
   programInfo,
   solutionFeatures,
-} from "../data/siteContent.js?v=20260615f";
-import { externalApplyLink, featureCard, sectionHeading } from "./shared.js?v=20260615f";
+} from "../data/siteContent.js?v=20260617a";
+import { applyTriggerButton, featureCard, sectionHeading } from "./shared.js?v=20260617a";
 
 const chipList = (items, className) => `<div class="${className}">${items.map((item) => `<span>${item}</span>`).join("")}</div>`;
 
@@ -30,7 +30,7 @@ export const heroSection = () => `
           <strong>감과 직관을 넘어, <span>반복 가능한 데이터 기반 의사결정</span></strong>
         </div>
       <div class="button-row">
-          ${externalApplyLink("button primary", "1기 신청하기", "hero_primary")}
+          ${applyTriggerButton("button primary", "1기 신청하기", "hero_primary")}
           <a
             class="button secondary"
             href="#curriculum"
@@ -225,7 +225,7 @@ export const finalCtaSection = () => `
       <p>
         데이터 수집부터 AI 리포트, 자동화 워크플로우까지 오프라인 실습으로 완성합니다.
       </p>
-      ${externalApplyLink("button primary", "1기 신청하기", "final_cta")}
+      ${applyTriggerButton("button primary", "1기 신청하기", "final_cta")}
     </div>
   </section>
 `;
