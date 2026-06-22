@@ -58,12 +58,17 @@ ADMIN_EMAIL=contact@eruty.co.kr
 FROM_EMAIL=이룸터 <noreply@erumter.com>
 SUPABASE_URL=
 SUPABASE_SERVICE_ROLE_KEY=
+GOOGLE_SHEETS_SPREADSHEET_ID=
+GOOGLE_SHEETS_SHEET_NAME=applications
+GOOGLE_SERVICE_ACCOUNT_EMAIL=
+GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY=
 ```
 
 주의:
 
 - `FROM_EMAIL`은 Resend에서 검증된 도메인의 주소여야 합니다.
 - 환경변수를 변경한 경우 기존 배포에는 바로 반영되지 않으므로 재배포가 필요합니다.
+- `GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY`는 줄바꿈이 포함된 값이라 Vercel 환경변수에 그대로 붙여넣거나 `\n` 형식으로 넣어야 합니다.
 
 ### 3. Supabase 테이블 생성
 
@@ -101,29 +106,54 @@ Supabase SQL Editor에서 아래 파일을 실행합니다.
 FROM_EMAIL=이룸터 <noreply@your-verified-domain.com>
 ```
 
-### 5. 신청 처리 흐름
+### 5. Google Sheets 연동
+
+구글 시트에도 신청 정보를 함께 쌓고 싶다면 아래 준비가 필요합니다.
+
+1. Google Sheets API를 활성화합니다.
+2. 서비스 계정을 생성합니다.
+3. 서비스 계정 키를 JSON으로 발급합니다.
+4. 신청 데이터를 저장할 시트를 만들고, 서비스 계정 이메일을 편집자로 공유합니다.
+5. 아래 환경변수를 Vercel에 등록합니다.
+
+```env
+GOOGLE_SHEETS_SPREADSHEET_ID=
+GOOGLE_SHEETS_SHEET_NAME=applications
+GOOGLE_SERVICE_ACCOUNT_EMAIL=
+GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY=
+```
+
+권장 헤더:
+
+```text
+created_at | name | phone | email | organization | investment_level | ai_experience | interests | purpose | message | referral_source | privacy_agreed | status
+```
+
+### 6. 신청 처리 흐름
 
 배포 후 사용자가 신청하면 서버에서는 아래 순서로 처리합니다.
 
 1. 요청 데이터 서버 검증
 2. 같은 이메일 중복 신청 여부 확인
 3. Supabase `applications` 저장
-4. 관리자 메일 발송
-5. 신청자 확인 메일 발송
-6. 성공 응답 반환
+4. Google Sheets 추가 저장
+5. 관리자 메일 발송
+6. 신청자 확인 메일 발송
+7. 성공 응답 반환
 
 이메일이 일부 실패해도 DB 저장이 끝났다면 신청은 접수되며, 사용자에게는 메일 발송 지연 가능 안내가 표시됩니다.
 
-### 6. 배포 후 확인 체크리스트
+### 7. 배포 후 확인 체크리스트
 
 - 신청 폼 제출이 가능한지
 - 동일 이메일 재신청 시 중복 안내가 뜨는지
 - Supabase `applications`에 데이터가 저장되는지
+- Google Sheets에 새 행이 추가되는지
 - 관리자 메일이 수신되는지
 - 신청자 확인 메일이 발송되는지
 - 성공 시 모달이 완료 화면으로 전환되는지
 
-### 7. 로컬 확인이 필요할 때
+### 8. 로컬 확인이 필요할 때
 
 로컬에서도 서버 함수까지 확인하려면 일반 정적 서버가 아니라 Vercel 개발 서버를 사용합니다.
 

@@ -1,10 +1,12 @@
 const { createClient } = require("@supabase/supabase-js");
+const { google } = require("googleapis");
 const { Resend } = require("resend");
 
 const APPLICATIONS_TABLE = "applications";
 const DEFAULT_APPLICATION_STATUS = "접수";
 const DEFAULT_ADMIN_EMAIL = "contact@eruty.co.kr";
 const DEFAULT_FROM_EMAIL = "이룸터 <noreply@erumter.com>";
+const GOOGLE_SHEETS_SCOPE = ["https://www.googleapis.com/auth/spreadsheets"];
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const phonePattern = /^[0-9-\s]+$/;
@@ -240,6 +242,27 @@ const createApplicationRecord = (payload) => ({
   created_at: payload.submittedAt.toISOString(),
 });
 
+const createGoogleSheetsConfig = () => {
+  const spreadsheetId = process.env.GOOGLE_SHEETS_SPREADSHEET_ID;
+  const sheetName = process.env.GOOGLE_SHEETS_SHEET_NAME || "applications";
+  const clientEmail = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
+  const privateKey = process.env.GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY;
+
+  if (!spreadsheetId || !clientEmail || !privateKey) {
+    return null;
+  }
+
+  return {
+    spreadsheetId,
+    range: `${sheetName}!A:M`,
+    auth: new google.auth.JWT({
+      email: clientEmail,
+      key: privateKey.replace(/\\n/g, "\n"),
+      scopes: GOOGLE_SHEETS_SCOPE,
+    }),
+  };
+};
+
 const createSupabaseClient = () => {
   const supabaseUrl = process.env.SUPABASE_URL;
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -295,6 +318,54 @@ const insertApplication = async (supabase, payload) => {
   }
 
   return data;
+};
+
+const appendApplicationToGoogleSheets = async (payload) => {
+  const sheetsConfig = createGoogleSheetsConfig();
+
+  if (!sheetsConfig) {
+    return {
+      ok: false,
+      skipped: true,
+      reason: "missing_google_sheets_environment_variables",
+    };
+  }
+
+  const sheets = google.sheets({
+    version: "v4",
+    auth: sheetsConfig.auth,
+  });
+
+  await sheets.spreadsheets.values.append({
+    spreadsheetId: sheetsConfig.spreadsheetId,
+    range: sheetsConfig.range,
+    valueInputOption: "USER_ENTERED",
+    insertDataOption: "INSERT_ROWS",
+    requestBody: {
+      values: [
+        [
+          payload.submittedAt.toISOString(),
+          payload.name,
+          payload.phone,
+          payload.email,
+          payload.organization,
+          payload.investmentLevelLabel,
+          payload.aiExperienceLabel,
+          payload.interestsLabel,
+          payload.purpose,
+          payload.inquiry,
+          payload.referralSourceLabel,
+          payload.privacyAgreed ? "TRUE" : "FALSE",
+          DEFAULT_APPLICATION_STATUS,
+        ],
+      ],
+    },
+  });
+
+  return {
+    ok: true,
+    skipped: false,
+  };
 };
 
 const createAdminEmail = (payload) => {
@@ -524,6 +595,24 @@ const handler = async (req, res) => {
     return;
   }
 
+  try {
+    const googleSheetsResult = await appendApplicationToGoogleSheets(normalizedPayload);
+
+    if (googleSheetsResult.skipped) {
+      console.warn("[apply] Skipped Google Sheets sync", {
+        reason: googleSheetsResult.reason,
+        applicantEmail: normalizedPayload.email,
+        applicantName: normalizedPayload.name,
+      });
+    }
+  } catch (error) {
+    console.error("[apply] Failed to append application to Google Sheets", {
+      ...serializeError(error),
+      applicantEmail: normalizedPayload.email,
+      applicantName: normalizedPayload.name,
+    });
+  }
+
   const emailResult = await sendApplyEmails(normalizedPayload);
 
   if (!emailResult.admin.ok) {
@@ -559,3 +648,5 @@ module.exports.createApplicationRecord = createApplicationRecord;
 module.exports.createAdminEmail = createAdminEmail;
 module.exports.createApplicantEmail = createApplicantEmail;
 module.exports.createSupabaseClient = createSupabaseClient;
+module.exports.createGoogleSheetsConfig = createGoogleSheetsConfig;
+module.exports.appendApplicationToGoogleSheets = appendApplicationToGoogleSheets;
