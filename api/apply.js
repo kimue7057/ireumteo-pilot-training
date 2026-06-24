@@ -11,6 +11,12 @@ const GOOGLE_SHEETS_SCOPE = ["https://www.googleapis.com/auth/spreadsheets"];
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const phonePattern = /^[0-9-\s]+$/;
 
+const SUCCESS_RESPONSE_MESSAGE =
+  "신청이 완료되었습니다. 입력하신 이메일로 접수 확인 메일을 발송할 예정입니다. 담당자가 확인 후 교육 일정 및 결제 안내를 순차적으로 전달드리겠습니다.";
+const PARTIAL_EMAIL_SUCCESS_MESSAGE =
+  "신청이 접수되었습니다. 다만 안내 메일 발송에 문제가 있을 수 있습니다. 잠시 후에도 메일을 받지 못하시면 contact@eruty.co.kr로 문의해 주세요.";
+const DUPLICATE_EMAIL_MESSAGE =
+  "이미 신청된 이메일입니다. 신청 내용 변경이 필요하신 경우 contact@eruty.co.kr로 문의해주세요.";
 const INTERNAL_ERROR_MESSAGE = "신청 처리 중 문제가 발생했습니다. 잠시 후 다시 시도해 주세요.";
 const INVALID_JSON_MESSAGE = "요청 본문을 올바른 JSON 형식으로 보내 주세요.";
 
@@ -28,11 +34,11 @@ const aiExperienceLabels = {
 };
 
 const interestLabels = {
-  "business-automation": "업무 자동화",
-  "investment-research": "투자 리서치",
-  "startup-execution": "창업 실행",
-  "marketing-automation": "마케팅",
-  "team-enable": "기업교육",
+  "stock-research-automation": "주식 리서치 자동화",
+  "news-disclosure-analysis": "뉴스/공시 분석",
+  "ai-reporting": "AI 리포트 생성",
+  "n8n-automation": "n8n 자동화",
+  "investment-routine": "투자 루틴 구축",
   other: "기타",
 };
 
@@ -42,13 +48,6 @@ const referralSourceLabels = {
   referral: "지인 추천",
   advertisement: "광고",
   other: "기타",
-};
-
-const programTypeLabels = {
-  seminar: "세미나",
-  course: "과정",
-  business: "기업교육",
-  contact: "문의",
 };
 
 const sendJson = (res, statusCode, body) => {
@@ -64,8 +63,6 @@ const escapeHtml = (value) =>
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#39;");
-
-const normalizeOptionalString = (value) => (typeof value === "string" && value.trim() ? value.trim() : "");
 
 const isPhoneFormatValid = (value) => {
   if (!phonePattern.test(value)) {
@@ -121,40 +118,18 @@ const getBodyFromRequest = (req) =>
     req.on("error", reject);
   });
 
-const requiresInvestmentLevel = (payload) => {
-  const programType = normalizeOptionalString(payload.programType).toLowerCase();
-  const programId = normalizeOptionalString(payload.programId).toLowerCase();
-
-  return programType === "seminar" || programType === "course" || programId.startsWith("invest-");
-};
-
-const buildDuplicateMessage = (payload) => {
-  const programLabel = normalizeOptionalString(payload.programTitle) || "해당 프로그램";
-  return `이미 ${programLabel}으로 접수된 이메일입니다. 신청 내용 변경이 필요하신 경우 ${DEFAULT_ADMIN_EMAIL}로 문의해 주세요.`;
-};
-
-const buildSuccessMessage = (payload, isPartialEmail) => {
-  const programLabel = normalizeOptionalString(payload.programTitle) || "이룸터 문의";
-
-  if (isPartialEmail) {
-    return `${programLabel} 접수는 완료되었습니다. 다만 안내 메일 발송에 문제가 있을 수 있습니다. 잠시 후에도 메일을 받지 못하시면 ${DEFAULT_ADMIN_EMAIL}로 문의해 주세요.`;
-  }
-
-  return `${programLabel} 접수가 완료되었습니다. 입력하신 이메일로 접수 확인 메일을 발송할 예정이며, 담당자가 확인 후 필요한 안내를 순차적으로 전달드리겠습니다.`;
-};
-
 const validateApplyPayload = (payload) => {
   if (!payload || typeof payload !== "object") {
     return "잘못된 요청입니다.";
   }
 
-  const name = normalizeOptionalString(payload.name);
-  const phone = normalizeOptionalString(payload.phone);
-  const email = normalizeOptionalString(payload.email);
-  const organization = normalizeOptionalString(payload.organization);
-  const investmentLevel = normalizeOptionalString(payload.investmentLevel);
-  const aiExperience = normalizeOptionalString(payload.aiExperience);
-  const purpose = normalizeOptionalString(payload.purpose);
+  const name = typeof payload.name === "string" ? payload.name.trim() : "";
+  const phone = typeof payload.phone === "string" ? payload.phone.trim() : "";
+  const email = typeof payload.email === "string" ? payload.email.trim() : "";
+  const organization = typeof payload.organization === "string" ? payload.organization.trim() : "";
+  const investmentLevel = typeof payload.investmentLevel === "string" ? payload.investmentLevel.trim() : "";
+  const aiExperience = typeof payload.aiExperience === "string" ? payload.aiExperience.trim() : "";
+  const purpose = typeof payload.purpose === "string" ? payload.purpose.trim() : "";
 
   if (!name) {
     return "이름을 입력해 주세요.";
@@ -180,7 +155,7 @@ const validateApplyPayload = (payload) => {
     return "직업 또는 소속을 입력해 주세요.";
   }
 
-  if (requiresInvestmentLevel(payload) && !investmentLevel) {
+  if (!investmentLevel) {
     return "투자 경험 수준을 선택해 주세요.";
   }
 
@@ -189,7 +164,7 @@ const validateApplyPayload = (payload) => {
   }
 
   if (!purpose) {
-    return "참여 목적 또는 문의 내용을 입력해 주세요.";
+    return "참여 목적을 입력해 주세요.";
   }
 
   if (payload.privacyAgreed !== true) {
@@ -227,43 +202,36 @@ const normalizePayload = (payload) => {
     ? [...new Set(payload.interests.filter((value) => typeof value === "string" && value.trim()).map((value) => value.trim()))]
     : [];
   const normalizedEmail = payload.email.trim().toLowerCase();
-  const normalizedReferralSource = normalizeOptionalString(payload.referralSource);
-  const normalizedProgramType = normalizeOptionalString(payload.programType).toLowerCase();
-  const normalizedProgramTitle = normalizeOptionalString(payload.programTitle);
+  const normalizedReferralSource =
+    typeof payload.referralSource === "string" && payload.referralSource.trim() ? payload.referralSource.trim() : "";
 
   return {
-    cohort: normalizeOptionalString(payload.cohort),
     name: payload.name.trim(),
     phone: payload.phone.trim(),
     email: normalizedEmail,
     organization: payload.organization.trim(),
-    investmentLevel: normalizeOptionalString(payload.investmentLevel),
-    investmentLevelLabel: getDisplayValue(investmentLevelLabels, normalizeOptionalString(payload.investmentLevel)),
+    investmentLevel: payload.investmentLevel.trim(),
+    investmentLevelLabel: getDisplayValue(investmentLevelLabels, payload.investmentLevel.trim()),
     aiExperience: payload.aiExperience.trim(),
     aiExperienceLabel: getDisplayValue(aiExperienceLabels, payload.aiExperience.trim()),
     interests: normalizedInterests,
     interestsLabel: getInterestDisplay(normalizedInterests),
     purpose: payload.purpose.trim(),
-    inquiry: normalizeOptionalString(payload.inquiry) || "없음",
+    inquiry: typeof payload.inquiry === "string" && payload.inquiry.trim() ? payload.inquiry.trim() : "없음",
     referralSource: normalizedReferralSource,
     referralSourceLabel: getDisplayValue(referralSourceLabels, normalizedReferralSource),
     privacyAgreed: payload.privacyAgreed === true,
-    programId: normalizeOptionalString(payload.programId),
-    programTitle: normalizedProgramTitle,
-    programType: normalizedProgramType,
-    programTypeLabel: getDisplayValue(programTypeLabels, normalizedProgramType) || "기타",
-    sourcePage: normalizeOptionalString(payload.sourcePage) || "/",
     submittedAt,
     submittedAtLabel: formatSubmittedAt(submittedAt),
   };
 };
 
-const createLegacyApplicationRecord = (payload) => ({
+const createApplicationRecord = (payload) => ({
   name: payload.name,
   phone: payload.phone,
   email: payload.email,
   organization: payload.organization,
-  investment_level: payload.investmentLevel || null,
+  investment_level: payload.investmentLevel,
   ai_experience: payload.aiExperience,
   interests: payload.interests,
   purpose: payload.purpose,
@@ -272,14 +240,6 @@ const createLegacyApplicationRecord = (payload) => ({
   privacy_agreed: payload.privacyAgreed,
   status: DEFAULT_APPLICATION_STATUS,
   created_at: payload.submittedAt.toISOString(),
-});
-
-const createApplicationRecord = (payload) => ({
-  ...createLegacyApplicationRecord(payload),
-  program_id: payload.programId || null,
-  program_title: payload.programTitle || null,
-  program_type: payload.programType || null,
-  source_page: payload.sourcePage || null,
 });
 
 const createGoogleSheetsConfig = () => {
@@ -294,7 +254,7 @@ const createGoogleSheetsConfig = () => {
 
   return {
     spreadsheetId,
-    range: `${sheetName}!A:Q`,
+    range: `${sheetName}!A:M`,
     auth: new google.auth.JWT({
       email: clientEmail,
       key: privateKey.replace(/\\n/g, "\n"),
@@ -330,11 +290,6 @@ const isDuplicateApplicationError = (error) => {
   return code === "23505" || message.includes("duplicate key") || message.includes("unique");
 };
 
-const isProgramMetadataColumnError = (error) => {
-  const message = error && typeof error === "object" && "message" in error ? String(error.message).toLowerCase() : "";
-  return ["program_id", "program_title", "program_type", "source_page"].some((column) => message.includes(column));
-};
-
 const findExistingApplicationByEmail = async (supabase, email) => {
   const { data, error } = await supabase
     .from(APPLICATIONS_TABLE)
@@ -350,60 +305,19 @@ const findExistingApplicationByEmail = async (supabase, email) => {
   return data;
 };
 
-const findExistingApplication = async (supabase, payload) => {
-  if (!payload.programId) {
-    return findExistingApplicationByEmail(supabase, payload.email);
-  }
-
-  const { data, error } = await supabase
-    .from(APPLICATIONS_TABLE)
-    .select("id")
-    .eq("email", payload.email)
-    .eq("program_id", payload.programId)
-    .limit(1)
-    .maybeSingle();
-
-  if (!error) {
-    return data;
-  }
-
-  if (isProgramMetadataColumnError(error)) {
-    console.warn("[apply] Program metadata columns are not available yet. Falling back to legacy email-only duplicate check.");
-    return findExistingApplicationByEmail(supabase, payload.email);
-  }
-
-  throw error;
-};
-
 const insertApplication = async (supabase, payload) => {
-  const modernRecord = createApplicationRecord(payload);
+  const applicationRecord = createApplicationRecord(payload);
   const { data, error } = await supabase
     .from(APPLICATIONS_TABLE)
-    .insert(modernRecord)
+    .insert(applicationRecord)
     .select("id, email")
     .maybeSingle();
 
-  if (!error) {
-    return data;
-  }
-
-  if (!isProgramMetadataColumnError(error)) {
+  if (error) {
     throw error;
   }
 
-  console.warn("[apply] Program metadata columns are not available yet. Falling back to legacy insert shape.");
-
-  const { data: legacyData, error: legacyError } = await supabase
-    .from(APPLICATIONS_TABLE)
-    .insert(createLegacyApplicationRecord(payload))
-    .select("id, email")
-    .maybeSingle();
-
-  if (legacyError) {
-    throw legacyError;
-  }
-
-  return legacyData;
+  return data;
 };
 
 const appendApplicationToGoogleSheets = async (payload) => {
@@ -431,15 +345,11 @@ const appendApplicationToGoogleSheets = async (payload) => {
       values: [
         [
           payload.submittedAt.toISOString(),
-          payload.programTitle || "일반 문의",
-          payload.programId || "-",
-          payload.programTypeLabel || "-",
-          payload.sourcePage || "/",
           payload.name,
           payload.phone,
           payload.email,
           payload.organization,
-          payload.investmentLevelLabel || "-",
+          payload.investmentLevelLabel,
           payload.aiExperienceLabel,
           payload.interestsLabel,
           payload.purpose,
@@ -459,45 +369,38 @@ const appendApplicationToGoogleSheets = async (payload) => {
 };
 
 const createAdminEmail = (payload) => {
-  const programLabel = payload.programTitle || payload.cohort || "이룸터 문의";
-  const subject = `[이룸터 접수] ${programLabel} - ${payload.name}`;
+  const subject = `[이룸터 1기 신청] ${payload.name} 님 신청 접수`;
   const text = [
-    `${programLabel} 접수가 등록되었습니다.`,
+    "이룸터 1기 신청이 접수되었습니다.",
     "",
-    `프로그램: ${programLabel}`,
-    `프로그램 유형: ${payload.programTypeLabel || "-"}`,
-    `유입 페이지: ${payload.sourcePage}`,
     `이름: ${payload.name}`,
     `연락처: ${payload.phone}`,
     `이메일: ${payload.email}`,
     `직업/소속: ${payload.organization}`,
-    `투자 경험 수준: ${payload.investmentLevelLabel || "-"}`,
+    `투자 경험 수준: ${payload.investmentLevelLabel}`,
     `AI 활용 경험: ${payload.aiExperienceLabel}`,
     `관심 분야: ${payload.interestsLabel}`,
     `참여 목적: ${payload.purpose}`,
-    `추가 메모: ${payload.inquiry}`,
+    `문의사항: ${payload.inquiry}`,
     `유입 경로: ${payload.referralSourceLabel}`,
     `접수 시간: ${payload.submittedAtLabel}`,
   ].join("\n");
 
   const html = `
     <div style="font-family: Pretendard, Apple SD Gothic Neo, Noto Sans KR, sans-serif; color: #102033; line-height: 1.7;">
-      <h2 style="margin: 0 0 16px;">${escapeHtml(programLabel)} 접수가 등록되었습니다.</h2>
+      <h2 style="margin: 0 0 16px;">이룸터 1기 신청이 접수되었습니다.</h2>
       <table style="width: 100%; border-collapse: collapse;">
         <tbody>
           ${[
-            ["프로그램", programLabel],
-            ["프로그램 유형", payload.programTypeLabel || "-"],
-            ["유입 페이지", payload.sourcePage],
             ["이름", payload.name],
             ["연락처", payload.phone],
             ["이메일", payload.email],
             ["직업/소속", payload.organization],
-            ["투자 경험 수준", payload.investmentLevelLabel || "-"],
+            ["투자 경험 수준", payload.investmentLevelLabel],
             ["AI 활용 경험", payload.aiExperienceLabel],
             ["관심 분야", payload.interestsLabel],
             ["참여 목적", payload.purpose],
-            ["추가 메모", payload.inquiry],
+            ["문의사항", payload.inquiry],
             ["유입 경로", payload.referralSourceLabel],
             ["접수 시간", payload.submittedAtLabel],
           ]
@@ -519,16 +422,12 @@ const createAdminEmail = (payload) => {
 };
 
 const createApplicantEmail = (payload) => {
-  const programLabel = payload.programTitle || payload.cohort || "이룸터 문의";
-  const isInquiry = payload.programType === "business" || payload.programType === "contact";
-  const subject = `[이룸터] ${programLabel} ${isInquiry ? "문의" : "신청"}가 정상 접수되었습니다.`;
+  const subject = "[이룸터] 1기 신청이 정상 접수되었습니다.";
   const text = [
     `안녕하세요, ${payload.name} 님.`,
-    `${programLabel} ${isInquiry ? "문의" : "신청"}가 정상 접수되었습니다.`,
+    "이룸터 1기 투자 AX 자동화 실전 과정 신청이 정상 접수되었습니다.",
     "",
-    isInquiry
-      ? "운영팀이 내용을 확인한 뒤 적합한 안내 방향으로 순차 회신드릴 예정입니다."
-      : "담당자가 신청 내용을 확인한 뒤 일정과 후속 안내를 순차적으로 전달드릴 예정입니다.",
+    "담당자가 신청 내용을 확인한 뒤 교육 일정, 장소, 결제 안내를 순차적으로 전달드릴 예정입니다.",
     "",
     "감사합니다.",
     "이룸터 운영팀",
@@ -537,12 +436,8 @@ const createApplicantEmail = (payload) => {
   const html = `
     <div style="font-family: Pretendard, Apple SD Gothic Neo, Noto Sans KR, sans-serif; color: #102033; line-height: 1.8;">
       <p>안녕하세요, ${escapeHtml(payload.name)} 님.</p>
-      <p>${escapeHtml(programLabel)} ${isInquiry ? "문의" : "신청"}가 정상 접수되었습니다.</p>
-      <p>${
-        isInquiry
-          ? "운영팀이 내용을 확인한 뒤 적합한 안내 방향으로 순차 회신드릴 예정입니다."
-          : "담당자가 신청 내용을 확인한 뒤 일정과 후속 안내를 순차적으로 전달드릴 예정입니다."
-      }</p>
+      <p>이룸터 1기 투자 AX 자동화 실전 과정 신청이 정상 접수되었습니다.</p>
+      <p>담당자가 신청 내용을 확인한 뒤 교육 일정, 장소, 결제 안내를 순차적으로 전달드릴 예정입니다.</p>
       <p>감사합니다.<br />이룸터 운영팀</p>
     </div>
   `;
@@ -667,12 +562,12 @@ const handler = async (req, res) => {
   }
 
   try {
-    const existingApplication = await findExistingApplication(supabase, normalizedPayload);
+    const existingApplication = await findExistingApplicationByEmail(supabase, normalizedPayload.email);
 
     if (existingApplication) {
       sendJson(res, 409, {
         success: false,
-        message: buildDuplicateMessage(normalizedPayload),
+        message: DUPLICATE_EMAIL_MESSAGE,
       });
       return;
     }
@@ -682,7 +577,7 @@ const handler = async (req, res) => {
     if (isDuplicateApplicationError(error)) {
       sendJson(res, 409, {
         success: false,
-        message: buildDuplicateMessage(normalizedPayload),
+        message: DUPLICATE_EMAIL_MESSAGE,
       });
       return;
     }
@@ -691,7 +586,6 @@ const handler = async (req, res) => {
       ...serializeError(error),
       applicantEmail: normalizedPayload.email,
       applicantName: normalizedPayload.name,
-      programId: normalizedPayload.programId,
     });
 
     sendJson(res, 500, {
@@ -743,7 +637,7 @@ const handler = async (req, res) => {
 
   sendJson(res, 200, {
     success: true,
-    message: buildSuccessMessage(normalizedPayload, hasEmailFailure),
+    message: hasEmailFailure ? PARTIAL_EMAIL_SUCCESS_MESSAGE : SUCCESS_RESPONSE_MESSAGE,
   });
 };
 

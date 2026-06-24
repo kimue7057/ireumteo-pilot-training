@@ -3,12 +3,6 @@
   --navy: #0d2034;
   --panel: #14283c;
   --panel-strong: #1a3148;
-  --paper: #f5f7fb;
-  --paper-strong: #ffffff;
-  --paper-soft: #e9eef6;
-  --ink: #102033;
-  --ink-soft: #526277;
-  --line-soft: rgba(16, 32, 51, 0.12);
   --line: #2a4158;
   --mint: #2dd4bf;
   --blue: #2563eb;
@@ -23,7 +17,6 @@
   --body: 17px;
   --radius: 14px;
   --shadow: 0 18px 42px rgba(0, 0, 0, 0.22);
-  --shadow-soft: 0 20px 48px rgba(16, 32, 51, 0.08);
 }
 
 * {
@@ -40,11 +33,6 @@ body {
   background: var(--dark);
   color: var(--text);
   letter-spacing: 0;
-}
-
-body[data-route] {
-  background: var(--paper);
-  color: var(--ink);
 }
 
 a {

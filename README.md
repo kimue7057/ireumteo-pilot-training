@@ -1,149 +1,56 @@
-# 이룸터 AX 플랫폼 리뉴얼 상태 메모
+# Invest AX
 
-문서 업데이트 기준: 2026-06-24
+이룸터의 Invest AX는 AI와 자동화 도구를 활용해 주식 투자 리서치 체계를 구축하는 오프라인 실습형 교육 과정입니다.
 
-이 저장소는 기존의 `Invest AX` 단일 랜딩 페이지에서, 이룸터 전체를 소개하는 **AX 교육·컨설팅 플랫폼 구조**로 전환 중입니다.  
-기존 Invest AX 콘텐츠와 신청 시스템은 삭제하지 않고, 프로그램 상세 페이지와 재사용 가능한 신청 플로우로 재배치했습니다.
+이 수업은 특정 종목을 추천하거나 단기 매매 기법을 알려주는 과정이 아닙니다. 뉴스, 공시, 재무 데이터, 시세 데이터, AI 리포트 생성을 하나의 반복 가능한 분석 흐름으로 연결하는 방법을 다룹니다.
 
-## 1. 현재 구조 요약
+## 📌 무엇을 배우나요?
 
-- 메인 홈 `/`
-  - 이룸터 AX 플랫폼 소개
-  - 문제 정의, 적용 방식, 적용 분야, 모집 프로그램, 후기, 기업교육 CTA
-- 프로그램 목록 `/programs`
-  - 전체 / 모집중 / 모집예정 / 기업교육 필터
-- 프로그램 상세
-  - `/programs/invest-ai-seminar`
-  - `/programs/invest-ax-course`
-- 기업교육 페이지 `/business`
-- 후기 및 현장 스토리 `/reviews`
-- 문의 페이지 `/contact`
+- 관심 종목의 시세 데이터와 주요 기술적 지표를 수집하는 방법
+- 뉴스와 리서치 자료를 요약하고 검색 가능한 구조로 정리하는 방법
+- AI를 활용해 핵심 이슈와 리스크를 정리하는 방법
+- n8n, AI 도구, 데이터 소스를 연결해 리서치 워크플로우를 만드는 방법
+- 백테스팅과 모의 검증으로 투자 기준을 점검하는 방법
 
-## 2. 라우팅 방식
+## 🎯 수강생은 무엇을 얻을 수 있나요?
 
-- 브라우저/배포 환경
-  - History API 기반 라우팅
-  - `vercel.json`에 페이지 경로용 rewrite 추가
-- 로컬 `file://` 열기 환경
-  - hash route fallback 사용
-  - 예: `#/programs`, `#/business`
+수강 후에는 단순한 강의 노트가 아니라, 실행 가능한 투자 리서치 워크플로우의 기본 구조를 갖게 됩니다. 반복적인 정보 수집과 정리를 줄이고, 본인만의 기준으로 데이터를 확인하는 흐름을 만들 수 있습니다.
 
-즉, **정적 구조를 유지하면서도 페이지 단위 탐색이 가능한 형태**로 구성되어 있습니다.
+핵심 결과물은 다음과 같습니다.
 
-## 3. 핵심 파일
+- 투자 리서치 워크플로우
+- 데이터 자동 수집 및 정리 구조
+- AI 투자 리포트 생성 흐름
+- 뉴스, 공시, 리서치 자료를 활용한 분석 루틴
+- 개인별 의사결정 체크리스트
 
-```text
-.
-├─ api/
-│  └─ apply.js                     # 재사용 가능한 신청/문의 API
-├─ assets/                         # 이미지/영상 자산
-├─ docs/
-│  └─ vercel-migration.md          # 기존 운영 문서 (보존)
-├─ src/
-│  ├─ components/
-│  │  ├─ applyModal.js             # 프로그램 공용 신청 모달
-│  │  ├─ sections.js               # 라우트별 페이지 렌더링
-│  │  └─ shared.js                 # 헤더/푸터/공용 버튼/링크
-│  ├─ data/
-│  │  ├─ programs.js               # 프로그램 목록/상세 데이터
-│  │  └─ siteContent.js            # 홈/후기/문의/기업교육 공용 콘텐츠
-│  ├─ lib/
-│  │  ├─ analytics.js              # GA 이벤트 훅
-│  │  ├─ applyForm.js              # 신청 폼 상태/검증/페이로드 생성
-│  │  └─ router.js                 # History/hash 하이브리드 라우터
-│  └─ app.js                       # 앱 마운트/라우팅/모달 초기화
-├─ styles/
-│  ├─ platform.css                 # 멀티 페이지 플랫폼 UI 스타일
-│  └─ apply-modal.css              # 신청 모달 스타일
-├─ supabase/
-│  ├─ applications.sql             # 기존 applications 테이블 생성 SQL
-│  └─ add-program-fields.sql       # program 메타데이터용 추가 migration
-├─ index.html
-├─ script.js
-└─ vercel.json
-```
+## 🚀 왜 들어야 하나요?
 
-## 4. 프로그램 데이터 관리
+개인 투자자는 매일 많은 정보를 접하지만, 그 정보를 일관된 기준으로 정리하고 판단으로 연결하기는 어렵습니다. Invest AX는 감이나 직관에 의존하는 투자 습관을 줄이고, 데이터와 AI를 활용해 반복 가능한 분석 프로세스를 만들 수 있도록 돕습니다.
 
-- 프로그램 카드/상세 데이터는 `src/data/programs.js`로 분리했습니다.
-- 홈/후기/기업교육/문의 공용 문구는 `src/data/siteContent.js`에 둡니다.
-- Invest AX 기존 커리큘럼, FAQ, 결과물 설명은 `programs.js`의 `invest-ax-course` 상세 데이터로 이동했습니다.
+AI 도구를 단순히 사용하는 수준을 넘어, 실제 투자 리서치 업무에 맞게 연결하고 자동화해보고 싶은 분에게 적합한 과정입니다.
 
-## 5. 신청 모달 동작 방식
+## 신청 시스템 배포 안내
 
-기존 단일 신청 모달을 **programId 기반 공용 모달**로 확장했습니다.
+현재 프로젝트의 신청 시스템은 다음 구조로 동작합니다.
 
-전달 가능한 주요 필드:
+- 정적 랜딩 페이지: `index.html`, `src/`, `styles/`
+- 신청 API: `api/apply.js`
+- 신청 데이터 저장: Supabase `applications` 테이블
+- 이메일 발송: Resend
 
-- `programId`
-- `programTitle`
-- `programType`
-- `sourcePage`
+Vercel에 배포하면 루트 `api` 디렉터리의 `apply.js`가 서버 함수로 배포되어, 폼 제출 시 DB 저장과 이메일 발송까지 처리할 수 있습니다.
 
-예시:
+### 1. Vercel 배포
 
-- `invest-ai-seminar`
-- `invest-ax-course`
-- `ai-workflow-course`
-- `business-consulting`
-- `general-contact`
+1. 저장소를 Vercel에 Import 합니다.
+2. Framework Preset은 `Other`로 두거나 자동 감지를 그대로 사용합니다.
+3. Build 설정은 기본값을 사용해도 됩니다. 이 프로젝트는 정적 파일 + `api/` 함수 구조라 추가 설정이 필요하지 않습니다.
+4. 환경변수를 입력한 뒤 새 배포를 실행합니다.
 
-동작 원리:
+### 2. 환경변수
 
-- 페이지 버튼은 프로그램 문맥을 `data-*` 속성으로 모달에 전달
-- 모달은 문맥에 따라 제목/설명/CTA 라벨을 변경
-- 투자 관련 프로그램만 `investmentLevel` 입력을 요구
-- API 요청에는 기존 필드와 함께 프로그램 메타데이터를 선택적으로 전달
-
-## 6. `/api/apply` 호환성 메모
-
-기존 기능은 유지합니다.
-
-- Supabase 저장
-- 중복 신청 방지
-- Resend 관리자/신청자 메일
-- Google Sheets 선택 연동
-
-추가/변경된 점:
-
-- `programId`, `programTitle`, `programType`, `sourcePage` 선택적 수신
-- 동일 이메일이라도 **다른 프로그램이면 접수 가능**하도록 확장
-- 단, Supabase migration이 아직 적용되지 않은 경우:
-  - API는 자동으로 **레거시 email-only 방식**으로 폴백
-  - 이 경우 프로그램별 중복 허용은 적용되지 않고 기존처럼 이메일 기준 중복으로 동작
-
-즉, **마이그레이션 전에도 API는 깨지지 않도록 구현**되어 있습니다.
-
-## 7. Supabase migration
-
-기존 초기 스키마:
-
-- `supabase/applications.sql`
-
-이번 리뉴얼 추가 migration:
-
-- `supabase/add-program-fields.sql`
-
-추가 컬럼:
-
-- `program_id`
-- `program_title`
-- `program_type`
-- `source_page`
-
-추가 index 정책:
-
-- 기존 `applications_email_unique_idx` 제거
-- `coalesce(program_id, 'legacy-general') + lower(email)` 기준 unique index 생성
-
-권장 실행 순서:
-
-1. 아직 테이블이 없다면 `supabase/applications.sql`
-2. 이미 운영 중이라면 추가로 `supabase/add-program-fields.sql`
-
-## 8. 환경변수
-
-기존 환경변수명은 그대로 유지합니다.
+`.env.example` 기준으로 아래 값을 Vercel Project Settings > Environment Variables에 등록합니다.
 
 ```env
 RESEND_API_KEY=
@@ -157,49 +64,99 @@ GOOGLE_SERVICE_ACCOUNT_EMAIL=
 GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY=
 ```
 
-추가 환경변수는 없습니다.
+주의:
 
-## 9. 로컬 확인 방법
+- `FROM_EMAIL`은 Resend에서 검증된 도메인의 주소여야 합니다.
+- 환경변수를 변경한 경우 기존 배포에는 바로 반영되지 않으므로 재배포가 필요합니다.
+- `GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY`는 줄바꿈이 포함된 값이라 Vercel 환경변수에 그대로 붙여넣거나 `\n` 형식으로 넣어야 합니다.
 
-정적 화면만 확인:
+### 3. Supabase 테이블 생성
 
-- `index.html`을 브라우저에서 직접 열기
-- 이 경우 hash route fallback 사용
+Supabase SQL Editor에서 아래 파일을 실행합니다.
 
-배포와 유사하게 확인:
+- `supabase/applications.sql`
+
+테이블에는 다음 정보가 저장됩니다.
+
+- `name`
+- `phone`
+- `email`
+- `organization`
+- `investment_level`
+- `ai_experience`
+- `interests`
+- `purpose`
+- `message`
+- `referral_source`
+- `privacy_agreed`
+- `status`
+- `created_at`
+
+`email`은 중복 신청 방지를 위해 고유하게 관리됩니다.
+
+### 4. Resend 설정
+
+1. Resend에서 발신 도메인을 추가합니다.
+2. DNS 레코드를 등록해 도메인을 검증합니다.
+3. 검증된 도메인 기준으로 `FROM_EMAIL`을 설정합니다.
+
+예시:
+
+```env
+FROM_EMAIL=이룸터 <noreply@your-verified-domain.com>
+```
+
+### 5. Google Sheets 연동
+
+구글 시트에도 신청 정보를 함께 쌓고 싶다면 아래 준비가 필요합니다.
+
+1. Google Sheets API를 활성화합니다.
+2. 서비스 계정을 생성합니다.
+3. 서비스 계정 키를 JSON으로 발급합니다.
+4. 신청 데이터를 저장할 시트를 만들고, 서비스 계정 이메일을 편집자로 공유합니다.
+5. 아래 환경변수를 Vercel에 등록합니다.
+
+```env
+GOOGLE_SHEETS_SPREADSHEET_ID=
+GOOGLE_SHEETS_SHEET_NAME=applications
+GOOGLE_SERVICE_ACCOUNT_EMAIL=
+GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY=
+```
+
+권장 헤더:
+
+```text
+created_at | name | phone | email | organization | investment_level | ai_experience | interests | purpose | message | referral_source | privacy_agreed | status
+```
+
+### 6. 신청 처리 흐름
+
+배포 후 사용자가 신청하면 서버에서는 아래 순서로 처리합니다.
+
+1. 요청 데이터 서버 검증
+2. 같은 이메일 중복 신청 여부 확인
+3. Supabase `applications` 저장
+4. Google Sheets 추가 저장
+5. 관리자 메일 발송
+6. 신청자 확인 메일 발송
+7. 성공 응답 반환
+
+이메일이 일부 실패해도 DB 저장이 끝났다면 신청은 접수되며, 사용자에게는 메일 발송 지연 가능 안내가 표시됩니다.
+
+### 7. 배포 후 확인 체크리스트
+
+- 신청 폼 제출이 가능한지
+- 동일 이메일 재신청 시 중복 안내가 뜨는지
+- Supabase `applications`에 데이터가 저장되는지
+- Google Sheets에 새 행이 추가되는지
+- 관리자 메일이 수신되는지
+- 신청자 확인 메일이 발송되는지
+- 성공 시 모달이 완료 화면으로 전환되는지
+
+### 8. 로컬 확인이 필요할 때
+
+로컬에서도 서버 함수까지 확인하려면 일반 정적 서버가 아니라 Vercel 개발 서버를 사용합니다.
 
 ```bash
 vercel dev
 ```
-
-확인 포인트:
-
-- `/`, `/programs`, `/programs/invest-ai-seminar`, `/programs/invest-ax-course`, `/business`, `/reviews`, `/contact`
-- 프로그램 필터 동작
-- 신청 버튼이 프로그램별 모달 문맥으로 열리는지
-- 기존 Invest AX 과정 버튼도 여전히 모달을 여는지
-- `/api/apply`가 기존 필드와 신규 프로그램 필드를 함께 처리하는지
-
-## 10. 참고 문서
-
-- `docs/vercel-migration.md`
-- `supabase/applications.sql`
-- `supabase/add-program-fields.sql`
-
-## 11. 현재 상태 메모
-
-코드 기준으로는:
-
-- 단일 랜딩 -> AX 플랫폼 구조 전환 반영
-- 프로그램 데이터 분리 반영
-- 공용 신청 모달 반영
-- 프로그램 메타데이터를 받는 API 반영
-- Vercel rewrite 반영
-
-운영에서 추가로 확인할 것:
-
-1. `supabase/add-program-fields.sql` 실제 적용 여부
-2. Resend 발신 도메인 검증 여부
-3. Google Sheets 시트 헤더가 확장 컬럼에 맞는지
-4. `vercel dev` 또는 실배포 환경에서 라우트 rewrite가 정상인지
-5. 동일 이메일로 다른 프로그램 신청 시 기대대로 접수되는지
