@@ -86,6 +86,30 @@ body.modal-open {
   line-height: 1.6;
 }
 
+.apply-context-block {
+  display: grid;
+  gap: 12px;
+}
+
+.apply-context-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.apply-context-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 34px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: rgba(45, 212, 191, 0.12);
+  color: var(--mint);
+  font-size: 12px;
+  font-weight: 700;
+}
+
 .apply-modal-close {
   min-height: 46px;
   padding: 0 18px;
@@ -149,6 +173,10 @@ body.modal-open {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 16px;
+}
+
+[data-investment-experience-field][hidden] {
+  display: none;
 }
 
 .apply-field {

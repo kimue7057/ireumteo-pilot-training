@@ -1,4 +1,15 @@
-export const APPLY_COHORT = "1기";
+export const DEFAULT_APPLY_CONTEXT = {
+  programId: "general-contact",
+  programTitle: "이룸터 문의",
+  programType: "contact",
+  sourcePage: "/contact",
+  eyebrow: "GENERAL INQUIRY",
+  description: "문의 내용을 남겨주시면 운영팀이 확인 후 순차적으로 회신드립니다.",
+  meta: ["상시 접수", "이메일 회신", "프로그램 안내"],
+  submitLabel: "문의 남기기",
+  requiresInvestmentLevel: false,
+  cohort: "문의",
+};
 
 export const investmentExperienceOptions = [
   { value: "beginner", label: "초급" },
@@ -14,11 +25,11 @@ export const aiExperienceOptions = [
 ];
 
 export const interestOptions = [
-  { value: "stock-research-automation", label: "주식 리서치 자동화" },
-  { value: "news-disclosure-analysis", label: "뉴스/공시 분석" },
-  { value: "ai-reporting", label: "AI 리포트 생성" },
-  { value: "n8n-automation", label: "n8n 자동화" },
-  { value: "investment-routine", label: "투자 루틴 구축" },
+  { value: "business-automation", label: "업무 자동화" },
+  { value: "investment-research", label: "투자 리서치" },
+  { value: "startup-execution", label: "창업 실행" },
+  { value: "marketing-automation", label: "마케팅" },
+  { value: "team-enable", label: "기업교육" },
   { value: "other", label: "기타" },
 ];
 
@@ -30,21 +41,33 @@ export const referralSourceOptions = [
   { value: "other", label: "기타" },
 ];
 
-export const createApplyFormState = () => ({
-  name: "",
-  phone: "",
-  email: "",
-  organization: "",
-  investmentExperience: "",
-  aiExperience: "",
-  purpose: "",
-  privacyConsent: false,
-  interests: [],
-  inquiry: "",
-  referralSource: "",
-  submissionState: "idle",
-  submitMessage: "",
+export const mergeApplyContext = (context = {}) => ({
+  ...DEFAULT_APPLY_CONTEXT,
+  ...context,
+  meta: Array.isArray(context.meta) && context.meta.length ? context.meta : DEFAULT_APPLY_CONTEXT.meta,
+  requiresInvestmentLevel: Boolean(context.requiresInvestmentLevel),
 });
+
+export const createApplyFormState = (context = {}) => {
+  const mergedContext = mergeApplyContext(context);
+
+  return {
+    name: "",
+    phone: "",
+    email: "",
+    organization: "",
+    investmentExperience: "",
+    aiExperience: "",
+    purpose: "",
+    privacyConsent: false,
+    interests: [],
+    inquiry: "",
+    referralSource: "",
+    submissionState: "idle",
+    submitMessage: "",
+    ...mergedContext,
+  };
+};
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const phonePattern = /^[0-9-\s]+$/;
@@ -86,7 +109,7 @@ export const validateApplyForm = (state) => {
     errors.organization = "직업 또는 소속을 입력해 주세요.";
   }
 
-  if (!state.investmentExperience) {
+  if (state.requiresInvestmentLevel && !state.investmentExperience) {
     errors.investmentExperience = "투자 경험 수준을 선택해 주세요.";
   }
 
@@ -95,7 +118,7 @@ export const validateApplyForm = (state) => {
   }
 
   if (!state.purpose.trim()) {
-    errors.purpose = "참여 목적을 입력해 주세요.";
+    errors.purpose = "참여 목적 또는 문의 내용을 입력해 주세요.";
   }
 
   if (!state.privacyConsent) {
@@ -106,18 +129,22 @@ export const validateApplyForm = (state) => {
 };
 
 export const buildApplyPayload = (state) => ({
-  cohort: APPLY_COHORT,
+  cohort: state.cohort || null,
   name: state.name.trim(),
   phone: state.phone.trim(),
   email: state.email.trim(),
   organization: state.organization.trim(),
-  investmentLevel: state.investmentExperience,
+  investmentLevel: state.investmentExperience || null,
   aiExperience: state.aiExperience,
   purpose: state.purpose.trim(),
   privacyAgreed: state.privacyConsent,
   interests: [...state.interests],
   inquiry: state.inquiry.trim(),
   referralSource: state.referralSource || null,
+  programId: state.programId || null,
+  programTitle: state.programTitle || null,
+  programType: state.programType || null,
+  sourcePage: state.sourcePage || null,
 });
 
 export const submitApplyForm = async (state) => {

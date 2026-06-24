@@ -68,6 +68,8 @@
 }
 
 .desktop-nav a:hover,
+.desktop-nav a.is-active,
+.mobile-nav a.is-active,
 .footer a:hover {
   color: var(--mint);
 }

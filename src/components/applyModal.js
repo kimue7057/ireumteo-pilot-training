@@ -1,10 +1,9 @@
 import {
-  APPLY_COHORT,
   aiExperienceOptions,
   interestOptions,
   investmentExperienceOptions,
   referralSourceOptions,
-} from "../lib/applyForm.js?v=20260618a";
+} from "../lib/applyForm.js";
 
 const renderTextField = ({
   name,
@@ -88,10 +87,11 @@ export const applyModal = () => `
     <div class="apply-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="apply-modal-title">
       <div class="apply-modal-shell">
         <div class="apply-modal-header">
-          <div>
-            <p class="eyebrow">APPLY ${APPLY_COHORT}</p>
-            <h2 id="apply-modal-title">${APPLY_COHORT} 신청</h2>
-            <p>기본 정보를 남겨주시면 이후 신청 접수와 안내 흐름으로 연결할 수 있도록 준비해둘게요.</p>
+          <div class="apply-context-block">
+            <p class="eyebrow" data-apply-context-eyebrow>GENERAL INQUIRY</p>
+            <h2 id="apply-modal-title" data-apply-context-title>이룸터 문의</h2>
+            <p data-apply-context-description>문의 내용을 남겨주시면 운영팀이 확인 후 순차적으로 회신드립니다.</p>
+            <div class="apply-context-meta" data-apply-context-meta></div>
           </div>
           <button class="apply-modal-close" type="button" data-close-apply-modal aria-label="신청 모달 닫기">
             닫기
@@ -135,7 +135,7 @@ export const applyModal = () => `
                 ${renderTextField({
                   name: "organization",
                   label: "직업/소속",
-                  placeholder: "예: 직장인 / 프리랜서 / 스타트업",
+                  placeholder: "예: 직장인 / 프리랜서 / 팀명",
                   autocomplete: "organization-title",
                   required: true,
                 })}
@@ -144,17 +144,19 @@ export const applyModal = () => `
 
             <section class="apply-form-section">
               <div class="apply-form-section-head">
-                <strong>참여 정보</strong>
+                <strong>참여 및 문의 정보</strong>
                 <span>필수 입력</span>
               </div>
               <div class="apply-form-grid">
-                ${renderSelectField({
-                  name: "investmentExperience",
-                  label: "투자 경험 수준",
-                  options: investmentExperienceOptions,
-                  placeholder: "선택해 주세요",
-                  required: true,
-                })}
+                <div data-investment-experience-field hidden>
+                  ${renderSelectField({
+                    name: "investmentExperience",
+                    label: "투자 경험 수준",
+                    options: investmentExperienceOptions,
+                    placeholder: "선택해 주세요",
+                    required: true,
+                  })}
+                </div>
                 ${renderSelectField({
                   name: "aiExperience",
                   label: "AI 활용 경험",
@@ -164,8 +166,8 @@ export const applyModal = () => `
                 })}
                 ${renderTextareaField({
                   name: "purpose",
-                  label: "참여 목적",
-                  placeholder: "이번 과정에 기대하는 점과 참여 목적을 적어 주세요.",
+                  label: "참여 목적 또는 문의 내용",
+                  placeholder: "무엇을 기대하고 있는지, 어떤 도움이 필요한지 적어 주세요.",
                   required: true,
                   full: true,
                 })}
@@ -181,8 +183,8 @@ export const applyModal = () => `
                 ${renderInterestChoices()}
                 ${renderTextareaField({
                   name: "inquiry",
-                  label: "문의사항",
-                  placeholder: "궁금한 점이 있다면 남겨 주세요.",
+                  label: "추가 메모",
+                  placeholder: "사전에 공유하고 싶은 상황이나 질문이 있다면 남겨 주세요.",
                   full: true,
                 })}
                 ${renderSelectField({
@@ -200,19 +202,21 @@ export const applyModal = () => `
                 <span>[필수] 개인정보 수집 및 이용에 동의합니다.</span>
               </label>
               <div class="apply-consent-copy">
-                <p>수집 항목: 이름, 연락처, 이메일, 직업/소속, 투자 경험, AI 활용 경험, 참여 목적, 문의사항</p>
-                <p>수집 목적: 교육 신청 접수, 교육 안내, 문의 대응, 수강 관련 안내</p>
-                <p>보유 기간: 교육 종료 후 1년 또는 신청자 삭제 요청 시까지</p>
+                <p>수집 항목: 이름, 연락처, 이메일, 직업/소속, AI 활용 경험, 참여 목적, 문의사항</p>
+                <p>수집 목적: 프로그램 신청 접수, 교육 안내, 문의 대응, 후속 연락</p>
+                <p>보유 기간: 문의 처리 완료 후 최대 1년 또는 신청자 삭제 요청 시까지</p>
               </div>
               <span class="apply-error" data-error-for="privacyConsent"></span>
             </section>
 
             <div class="apply-form-footer">
-              <p class="apply-form-caption">신청 정보를 남겨주시면 접수 확인 후 입력하신 이메일로 안내를 순차적으로 전달드립니다.</p>
+              <p class="apply-form-caption" data-apply-form-caption>
+                신청 정보를 남겨주시면 접수 확인 후 입력하신 이메일로 안내를 순차적으로 전달드립니다.
+              </p>
               <div class="apply-form-actions">
                 <p class="apply-form-feedback" data-apply-form-feedback data-state="idle" aria-live="polite"></p>
-                <button class="button primary apply-submit" type="submit" data-analytics-event="submit_apply_form_ui" data-analytics-label="apply_modal_submit">
-                  신청 완료하기
+                <button class="button primary apply-submit" type="submit" data-apply-submit-button data-analytics-event="submit_apply_form_ui" data-analytics-label="apply_modal_submit">
+                  문의 남기기
                 </button>
               </div>
             </div>
@@ -224,7 +228,7 @@ export const applyModal = () => `
           <h3 class="apply-success-title" data-apply-success-title>신청이 완료되었습니다.</h3>
           <div class="apply-success-copy">
             <p data-apply-success-primary>입력하신 이메일로 접수 확인 메일을 발송했습니다.</p>
-            <p data-apply-success-secondary>담당자가 확인 후 교육 일정, 장소, 결제 안내를 순차적으로 전달드릴 예정입니다.</p>
+            <p data-apply-success-secondary>담당자가 확인 후 필요한 안내를 순차적으로 전달드릴 예정입니다.</p>
             <p class="apply-success-contact">
               문의가 필요하신 경우 <a href="mailto:contact@eruty.co.kr">contact@eruty.co.kr</a>로 연락 주세요.
             </p>

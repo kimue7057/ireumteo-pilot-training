@@ -1,11 +1,16 @@
-import { applyModal } from "./components/applyModal.js?v=20260618d";
-import { footer, header } from "./components/shared.js?v=20260617a";
-import { pageSections } from "./components/sections.js?v=20260617a";
-import { initAnalytics, initAnalyticsEvents } from "./lib/analytics.js?v=20260617a";
-import { createApplyFormState, submitApplyForm, validateApplyForm } from "./lib/applyForm.js?v=20260618a";
+import { applyModal } from "./components/applyModal.js";
+import { footer, header } from "./components/shared.js";
+import { getPageMeta, renderRoutePage } from "./components/sections.js";
+import { initAnalytics, initAnalyticsEvents } from "./lib/analytics.js";
+import {
+  DEFAULT_APPLY_CONTEXT,
+  createApplyFormState,
+  mergeApplyContext,
+  submitApplyForm,
+  validateApplyForm,
+} from "./lib/applyForm.js";
+import { getCurrentRoute, navigateTo } from "./lib/router.js";
 
-const DEFAULT_SUCCESS_MESSAGE =
-  "신청이 완료되었습니다. 입력하신 이메일로 접수 확인 메일을 발송할 예정입니다. 담당자가 확인 후 교육 일정 및 결제 안내를 순차적으로 전달드리겠습니다.";
 const EMAIL_WARNING_FRAGMENT = "안내 메일 발송에 문제가 있을 수 있습니다";
 
 const createCompletionState = () => ({
@@ -16,24 +21,57 @@ const createCompletionState = () => ({
 
 const mount = document.querySelector("[data-app]");
 
+const syncDocumentMeta = (path) => {
+  const meta = getPageMeta(path);
+  document.title = meta.title;
+
+  const descriptionTag = document.querySelector('meta[name="description"]');
+  if (descriptionTag) {
+    descriptionTag.setAttribute("content", meta.description);
+  }
+};
+
+const getApplyContextFromElement = (element, fallbackSourcePage) =>
+  mergeApplyContext({
+    programId: element?.dataset.programId,
+    programTitle: element?.dataset.programTitle,
+    programType: element?.dataset.programType,
+    sourcePage: element?.dataset.sourcePage || fallbackSourcePage || DEFAULT_APPLY_CONTEXT.sourcePage,
+    eyebrow: element?.dataset.eyebrow,
+    description: element?.dataset.description,
+    meta: element?.dataset.meta ? element.dataset.meta.split("|").filter(Boolean) : undefined,
+    submitLabel: element?.dataset.submitLabel,
+    requiresInvestmentLevel: element?.dataset.requiresInvestmentLevel === "true",
+    cohort: element?.dataset.cohort,
+  });
+
 const renderPage = () => {
-  if (!mount) return;
+  if (!mount) {
+    return;
+  }
+
+  const route = getCurrentRoute();
+  syncDocumentMeta(route.path);
 
   mount.innerHTML = `
-    ${header()}
-    <main id="top">
-      ${pageSections()}
+    ${header({ currentPath: route.path, primaryApplyContext: DEFAULT_APPLY_CONTEXT })}
+    <main id="top" class="page-shell">
+      ${renderRoutePage(route)}
     </main>
     ${footer()}
     ${applyModal()}
   `;
+
+  document.body.dataset.route = route.path;
 };
 
 const initMobileMenu = () => {
   const menuButton = document.querySelector("[data-menu-button]");
   const mobileNav = document.querySelector("[data-mobile-nav]");
 
-  if (!menuButton || !mobileNav) return;
+  if (!menuButton || !mobileNav) {
+    return;
+  }
 
   menuButton.addEventListener("click", () => {
     const expanded = menuButton.getAttribute("aria-expanded") === "true";
@@ -42,27 +80,89 @@ const initMobileMenu = () => {
   });
 };
 
-const initSmoothAnchors = () => {
+const closeMobileMenu = () => {
   const menuButton = document.querySelector("[data-menu-button]");
   const mobileNav = document.querySelector("[data-mobile-nav]");
 
-  document.querySelectorAll('a[href^="#"]').forEach((link) => {
-    link.addEventListener("click", (event) => {
-      const targetId = link.getAttribute("href");
-      if (!targetId) return;
+  if (!menuButton || !mobileNav) {
+    return;
+  }
 
-      const target = document.querySelector(targetId);
-      if (!target) return;
+  mobileNav.hidden = true;
+  menuButton.setAttribute("aria-expanded", "false");
+};
+
+const initRouteLinks = () => {
+  document.querySelectorAll("[data-route-link]").forEach((link) => {
+    link.addEventListener("click", (event) => {
+      if (!(link instanceof HTMLAnchorElement)) {
+        return;
+      }
 
       event.preventDefault();
-      target.scrollIntoView({ behavior: "smooth", block: "start" });
 
-      if (mobileNav && !mobileNav.hidden) {
-        mobileNav.hidden = true;
-        menuButton?.setAttribute("aria-expanded", "false");
+      const routePath = link.dataset.routePath || "/";
+      let query = {};
+
+      if (link.dataset.routeQuery) {
+        try {
+          query = JSON.parse(link.dataset.routeQuery);
+        } catch (error) {
+          query = {};
+        }
       }
+
+      closeMobileMenu();
+      navigateTo(routePath, query);
     });
   });
+};
+
+const initProgramFilters = () => {
+  const filterButtons = Array.from(document.querySelectorAll("[data-program-filter]"));
+  const cards = Array.from(document.querySelectorAll("[data-program-card]"));
+
+  if (!filterButtons.length || !cards.length) {
+    return;
+  }
+
+  const applyFilter = (nextFilter) => {
+    filterButtons.forEach((button) => {
+      button.classList.toggle("is-active", button.dataset.programFilter === nextFilter);
+    });
+
+    cards.forEach((card) => {
+      const group = card.getAttribute("data-filter-group");
+      card.hidden = nextFilter !== "all" && group !== nextFilter;
+    });
+  };
+
+  filterButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const nextFilter = button.dataset.programFilter || "all";
+      applyFilter(nextFilter);
+    });
+  });
+
+  applyFilter("all");
+};
+
+const scrollToRequestedSection = () => {
+  const route = getCurrentRoute();
+  const targetSection = route.query.section;
+
+  if (route.path === "/" && targetSection) {
+    const target = document.querySelector(`[data-scroll-section="${targetSection}"]`);
+
+    if (target instanceof HTMLElement) {
+      window.requestAnimationFrame(() => {
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+      return;
+    }
+  }
+
+  window.scrollTo({ top: 0, left: 0, behavior: "auto" });
 };
 
 const initApplyModal = () => {
@@ -71,12 +171,18 @@ const initApplyModal = () => {
   const successView = document.querySelector("[data-apply-success-view]");
   const form = document.querySelector("[data-apply-form]");
   const feedback = document.querySelector("[data-apply-form-feedback]");
-  const submitButton = form?.querySelector('button[type="submit"]');
+  const submitButton = document.querySelector("[data-apply-submit-button]");
   const successTitle = document.querySelector("[data-apply-success-title]");
   const successPrimary = document.querySelector("[data-apply-success-primary]");
   const successSecondary = document.querySelector("[data-apply-success-secondary]");
   const successStatus = document.querySelector("[data-apply-success-status]");
   const successButtons = document.querySelectorAll("[data-apply-success-action]");
+  const contextEyebrow = document.querySelector("[data-apply-context-eyebrow]");
+  const contextTitle = document.querySelector("[data-apply-context-title]");
+  const contextDescription = document.querySelector("[data-apply-context-description]");
+  const contextMeta = document.querySelector("[data-apply-context-meta]");
+  const investmentExperienceField = document.querySelector("[data-investment-experience-field]");
+  const formCaption = document.querySelector("[data-apply-form-caption]");
 
   if (
     !modal ||
@@ -89,7 +195,13 @@ const initApplyModal = () => {
     !successPrimary ||
     !successSecondary ||
     !successStatus ||
-    !successButtons.length
+    !successButtons.length ||
+    !contextEyebrow ||
+    !contextTitle ||
+    !contextDescription ||
+    !contextMeta ||
+    !investmentExperienceField ||
+    !formCaption
   ) {
     return;
   }
@@ -99,12 +211,19 @@ const initApplyModal = () => {
   const closeAnimationMs = 180;
   let closeTimer = null;
   let activeTrigger = null;
-  let formState = createApplyFormState();
+  let activeContext = DEFAULT_APPLY_CONTEXT;
+  let formState = createApplyFormState(activeContext);
   let completionState = createCompletionState();
   let formErrors = {};
   let hasSubmitted = false;
 
   const isSubmitting = () => formState.submissionState === "submitting";
+  const isInquiryContext = () => ["business", "contact"].includes(activeContext.programType);
+
+  const getDefaultFormCaption = () =>
+    isInquiryContext()
+      ? "문의 내용을 남겨주시면 운영팀이 확인 후 이메일 또는 전화로 순차 회신드립니다."
+      : "신청 정보를 남겨주시면 접수 확인 후 입력하신 이메일로 안내를 순차적으로 전달드립니다.";
 
   const syncFieldsFromState = () => {
     form.querySelectorAll("[name]").forEach((field) => {
@@ -153,11 +272,14 @@ const initApplyModal = () => {
     feedback.classList.toggle("is-visible", Boolean(formState.submitMessage));
   };
 
-  const syncSubmitButton = () => {
-    const submitting = isSubmitting();
-    submitButton.disabled = submitting || completionState.isVisible;
-    submitButton.textContent = submitting ? "신청 처리 중..." : "신청 완료하기";
-    submitButton.setAttribute("aria-busy", submitting ? "true" : "false");
+  const syncContextUi = () => {
+    contextEyebrow.textContent = activeContext.eyebrow;
+    contextTitle.textContent = activeContext.programTitle;
+    contextDescription.textContent = activeContext.description;
+    contextMeta.innerHTML = activeContext.meta.map((item) => `<span class="apply-context-pill">${item}</span>`).join("");
+    formCaption.textContent = getDefaultFormCaption();
+    investmentExperienceField.hidden = !activeContext.requiresInvestmentLevel;
+    submitButton.textContent = isSubmitting() ? "처리 중..." : activeContext.submitLabel;
   };
 
   const syncSuccessView = () => {
@@ -172,19 +294,36 @@ const initApplyModal = () => {
       return;
     }
 
-    successTitle.textContent = completionState.isEmailDeliveryConfirmed ? "신청이 완료되었습니다." : "신청이 접수되었습니다.";
+    successTitle.textContent = completionState.isEmailDeliveryConfirmed
+      ? isInquiryContext()
+        ? "문의가 접수되었습니다."
+        : "신청이 완료되었습니다."
+      : isInquiryContext()
+        ? "문의가 정상 접수되었습니다."
+        : "신청이 정상 접수되었습니다.";
+
     successPrimary.textContent = completionState.isEmailDeliveryConfirmed
-      ? "입력하신 이메일로 접수 확인 메일을 발송했습니다."
-      : "신청은 정상적으로 접수되었습니다.";
+      ? `${activeContext.programTitle} 관련 접수 확인 메일을 발송했습니다.`
+      : `${activeContext.programTitle} 관련 내용은 정상 접수되었습니다.`;
+
     successSecondary.textContent = completionState.isEmailDeliveryConfirmed
-      ? "담당자가 확인 후 교육 일정, 장소, 결제 안내를 순차적으로 전달드릴 예정입니다."
-      : "다만 안내 메일 발송에 문제가 있을 수 있습니다. 잠시 후에도 메일을 받지 못하시면 아래 연락처로 문의해 주세요.";
+      ? isInquiryContext()
+        ? "운영팀이 확인 후 적합한 안내 방향을 검토해 순차적으로 회신드릴 예정입니다."
+        : "운영팀이 확인 후 일정, 장소, 후속 안내를 순차적으로 전달드릴 예정입니다."
+      : completionState.serverMessage;
 
     successStatus.hidden = completionState.isEmailDeliveryConfirmed;
     successStatus.textContent = completionState.isEmailDeliveryConfirmed ? "" : completionState.serverMessage;
   };
 
+  const syncSubmitButton = () => {
+    const submitting = isSubmitting();
+    submitButton.disabled = submitting || completionState.isVisible;
+    submitButton.setAttribute("aria-busy", submitting ? "true" : "false");
+  };
+
   const syncFormUi = () => {
+    syncContextUi();
     syncSuccessView();
     syncFieldsFromState();
     syncValidationState();
@@ -201,7 +340,7 @@ const initApplyModal = () => {
   };
 
   const setCompletionStateFromMessage = (message) => {
-    const normalizedMessage = typeof message === "string" && message ? message : DEFAULT_SUCCESS_MESSAGE;
+    const normalizedMessage = typeof message === "string" && message ? message : "";
 
     completionState = {
       isVisible: true,
@@ -211,11 +350,16 @@ const initApplyModal = () => {
   };
 
   const resetApplyFlow = () => {
-    formState = createApplyFormState();
+    formState = createApplyFormState(activeContext);
     completionState = createCompletionState();
     formErrors = {};
     hasSubmitted = false;
     syncFormUi();
+  };
+
+  const setActiveContext = (nextContext) => {
+    activeContext = mergeApplyContext(nextContext);
+    resetApplyFlow();
   };
 
   const updateStateFromField = (field) => {
@@ -312,7 +456,9 @@ const initApplyModal = () => {
 
   const focusFirstInvalidField = () => {
     const [firstInvalidName] = Object.keys(formErrors);
-    if (!firstInvalidName) return;
+    if (!firstInvalidName) {
+      return;
+    }
 
     const invalidFieldContainer = form.querySelector(`[data-field="${firstInvalidName}"]`);
     const invalidField = form.querySelector(`[name="${firstInvalidName}"]`);
@@ -338,22 +484,35 @@ const initApplyModal = () => {
   };
 
   openButtons.forEach((button) => {
-    button.addEventListener("click", () => openModal(button));
+    button.addEventListener("click", () => {
+      const route = getCurrentRoute();
+      const nextContext = getApplyContextFromElement(button, route.path);
+      setActiveContext(nextContext);
+      openModal(button);
+    });
   });
 
   successButtons.forEach((button) => {
     button.addEventListener("click", () => {
-      if (isSubmitting()) return;
+      if (isSubmitting()) {
+        return;
+      }
+
       closeModal({ resetAfterClose: true });
     });
   });
 
   modal.addEventListener("click", (event) => {
     const target = event.target;
-    if (!(target instanceof HTMLElement)) return;
+    if (!(target instanceof HTMLElement)) {
+      return;
+    }
 
     if (target.hasAttribute("data-close-apply-modal")) {
-      if (isSubmitting()) return;
+      if (isSubmitting()) {
+        return;
+      }
+
       closeModal();
     }
   });
@@ -390,19 +549,21 @@ const initApplyModal = () => {
       const result = await submitApplyForm(formState);
       showCompletionScreen(result?.message);
     } catch (error) {
-      setSubmissionFeedback(
-        "error",
-        error instanceof Error ? error.message : "신청 처리 중 오류가 발생했습니다."
-      );
+      setSubmissionFeedback("error", error instanceof Error ? error.message : "신청 처리 중 오류가 발생했습니다.");
       syncFormUi();
     }
   });
 
-  document.addEventListener("keydown", (event) => {
-    if (modal.hidden) return;
+  modal.addEventListener("keydown", (event) => {
+    if (modal.hidden) {
+      return;
+    }
 
     if (event.key === "Escape") {
-      if (isSubmitting()) return;
+      if (isSubmitting()) {
+        return;
+      }
+
       closeModal();
       return;
     }
@@ -412,7 +573,9 @@ const initApplyModal = () => {
     }
 
     const focusableElements = findFocusableElements();
-    if (!focusableElements.length) return;
+    if (!focusableElements.length) {
+      return;
+    }
 
     const firstFocusable = focusableElements[0];
     const lastFocusable = focusableElements[focusableElements.length - 1];
@@ -429,9 +592,18 @@ const initApplyModal = () => {
   syncFormUi();
 };
 
-renderPage();
-initApplyModal();
+const mountPage = () => {
+  renderPage();
+  initMobileMenu();
+  initRouteLinks();
+  initProgramFilters();
+  initApplyModal();
+  scrollToRequestedSection();
+};
+
+mountPage();
 initAnalytics();
 initAnalyticsEvents();
-initMobileMenu();
-initSmoothAnchors();
+
+window.addEventListener("popstate", mountPage);
+window.addEventListener("hashchange", mountPage);
